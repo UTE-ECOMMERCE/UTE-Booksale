@@ -1,7 +1,7 @@
 package com.ecommerce.booksale.book.category;
 
 
-import com.ecommerce.booksale.exception.NotFoundException;
+import com.ecommerce.booksale.exception.BookNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,29 +35,39 @@ public class CategoryService {
         return categoriesDTO;
     }
 
-    public Map<String, Category> getHomeCategories(){
-        // create new Map
-        Map<String, Category> categoryMap = new HashMap<>();
+    public Map<String, CategoryDTO> getHomeCategories(){
 
-        // get categories
-        Category fiction = categoryRepository.findById(1)
-                        .orElseThrow(() -> new NotFoundException("Không có mục sách này")); // id = 1 is fiction book in database
-        Category selfHelp = categoryRepository.findById(6)
-                .orElseThrow(() -> new NotFoundException("Không có mục sách này")); // id = 6 is self-help book
-        Category children = categoryRepository.findById(7)
-                .orElseThrow(() -> new NotFoundException("Không có mục sách này")); // id = 7 is children book in database
+        try{
+            // create new Map
+            Map<String, CategoryDTO> categoryMap = new HashMap<>();
 
-        // add to map
-        categoryMap.put("fiction", fiction);
-        categoryMap.put("selfHelp", selfHelp);
-        categoryMap.put("children", children);
+            // get categories
+            Category fiction = categoryRepository.findById(1)
+                    .orElseThrow(() -> new BookNotFoundException("Không có mục sách tiểu thuyết")); // id = 1 is fiction book in database
+            CategoryDTO fictionDTO = CategoryMapper.toDTO(fiction);
+            Category selfHelp = categoryRepository.findById(6)
+                    .orElseThrow(() -> new BookNotFoundException("Không có mục sách self-help")); // id = 6 is self-help book
+            CategoryDTO selfHelpDTO = CategoryMapper.toDTO(selfHelp);
+            Category children = categoryRepository.findById(7)
+                    .orElseThrow(() -> new BookNotFoundException("Không có mục sách thiếu nhi")); // id = 7 is children book in database
+            CategoryDTO childrenDTO = CategoryMapper.toDTO(children);
 
+            // add to map
+            categoryMap.put("fiction", fictionDTO);
+            categoryMap.put("selfHelp", selfHelpDTO);
+            categoryMap.put("children", childrenDTO);
 
-        return categoryMap;
+            // return result
+            return categoryMap;
+        }catch (Exception ex){
+            ex.getStackTrace();
+            throw ex;
+        }
+
     }
 
     public Category getCategoryById(int id){
-        return categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Không có danh mục này"));
+        return categoryRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Không có danh mục này"));
     }
 
 

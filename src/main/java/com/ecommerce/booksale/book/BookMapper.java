@@ -14,11 +14,14 @@ public class BookMapper {
         bookDTO.setPublicationYear(book.getPublicationYear());
         bookDTO.setDiscount(book.getDiscount());
         bookDTO.setMainImg(book.getMainImg());
+        bookDTO.setDesc(book.getBookDescription());
+        bookDTO.setPages(book.getTotalPages() == null ? 300 : book.getTotalPages());
         bookDTO.setActive(book.isActive());
         bookDTO.setFinalPrice(handlePrice(book.getPrice(), book.getDiscount()));
         bookDTO.setPrice(book.getPrice());
+        bookDTO.setCoverType(book.getCoverType());
         bookDTO.setQuantity(book.getQuantity());
-        bookDTO.setAuthorId(book.getAuthor().getAuthorId());
+        bookDTO.setAuthorName(book.getAuthor().getName());
         bookDTO.setPublisherId(book.getPublisher().getPublisherId());
 
         List<Integer> categoryIds = book.getCategories().stream()

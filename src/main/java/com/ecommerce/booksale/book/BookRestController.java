@@ -30,10 +30,12 @@ public class BookRestController {
 
     @GetMapping("/category/{categoryName}")
     BookPaging getBooksByCategory(@PathVariable String categoryName, @RequestParam("page") Integer pageNumber){
-        int convertedId = CategoryMapper.mapToCategoryId(categoryName);
-        Category category = categoryService.getCategoryById(convertedId);
+        int convertedId = CategoryMapper
+                                .mapToCategoryId(categoryName);
+        Category category = categoryService
+                                .getCategoryById(convertedId);
+        // book paging
         return bookService.getPagingBooks(category, pageNumber, itemsPerPage);
     }
-
 
 }

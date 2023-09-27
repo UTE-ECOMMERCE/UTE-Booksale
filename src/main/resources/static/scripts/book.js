@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const path = prevButton.getAttribute("path");
 
-  console.log(path);
-
   loadDataCategoryBooks(
     `http://localhost:8080/booksale/api/book/category/${path}?page=0`,
     container

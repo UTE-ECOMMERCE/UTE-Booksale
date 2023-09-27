@@ -18,13 +18,15 @@ public class BookDTO {
     private int discount;
     private String mainImg;
     private double price;
+    private int pages;
+    private String desc;
+    private String coverType;
     private int quantity;
     private boolean isActive;
     private String finalPrice;
-    private int authorId;
+    private String authorName;
     private int publisherId;
     private List<Integer> categoryIds;
     private List<Integer> subcategoryIds;
     private List<Integer> imageIds;
-
 }

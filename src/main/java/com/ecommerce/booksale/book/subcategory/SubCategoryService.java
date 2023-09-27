@@ -2,7 +2,7 @@ package com.ecommerce.booksale.book.subcategory;
 
 
 import com.ecommerce.booksale.book.category.Category;
-import com.ecommerce.booksale.exception.NotFoundException;
+import com.ecommerce.booksale.exception.BookNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +20,6 @@ public class SubCategoryService {
 
     public SubCategory getSubcategoryById(int id) {
         return subCategoryRepository.findById(id)
-                .orElseThrow(()->new NotFoundException("Không tìm thấy danh mục " + id));
+                .orElseThrow(()->new BookNotFoundException("Không tìm thấy danh mục " + id));
     }
 }

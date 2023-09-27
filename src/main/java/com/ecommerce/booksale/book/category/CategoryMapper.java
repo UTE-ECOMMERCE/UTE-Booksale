@@ -9,10 +9,10 @@ public class CategoryMapper {
 
     public static CategoryDTO toDTO (Category category){
         CategoryDTO categoryDTO = new CategoryDTO();
-
         categoryDTO.setCategoryId(category.getCategoryId());
         categoryDTO.setCategoryName(category.getName());
         categoryDTO.setKebabCaseName(convertToKebabCase(category.getName()));
+        categoryDTO.setSubcategories(category.getSubCategories());
 
         return categoryDTO;
     }

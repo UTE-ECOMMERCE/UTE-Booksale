@@ -41,11 +41,12 @@
               <a th:href="@{/cart}" class="cart header-link"
               ><ion-icon class="cart-icon" name="cart-sharp"></ion-icon
               ></a>
+              <span class="cart-quantity">0</span>
             </li>
-<!--            <li class="main-nav-item" sec:authorize="isAnonymous()">-->
-<!--              <a th:href="@{/login}" class="header-link">Đăng nhập</a>-->
-<!--            </li>-->
-            <li class="main-nav-item dropdown" sec:authorize="isAuthenticated()">
+            <li class="main-nav-item" sec:authorize="isAnonymous()">
+              <a th:href="@{/login}" class="header-link">Đăng nhập</a>
+            </li>
+            <li class="main-nav-item dropdown" sec:authorize="hasRole('CUSTOMER')">
               <a class="user header-link dropdown-toggle" href="#"
               ><img
                       class="profile-img"

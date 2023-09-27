@@ -1,6 +1,7 @@
 package com.ecommerce.booksale.user;
 
 
+import com.ecommerce.booksale.order.Order;
 import com.ecommerce.booksale.user.role.Role;
 import com.ecommerce.booksale.registration.token.ConfirmationToken;
 import com.ecommerce.booksale.user.address.Address;
@@ -49,6 +50,7 @@ public class User implements UserDetails {
     @Column(name="is_lock")
     private Boolean isLock;
 
+    //One user has many roles
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name="user_role",
@@ -56,11 +58,18 @@ public class User implements UserDetails {
                 inverseJoinColumns = @JoinColumn(name="role_id"))
     private List<Role> roles;
 
+    // one user has many token
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ConfirmationToken> confirmationTokens;
 
+    // one user has many
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> addresses;
+
+    // one user has many orders
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH} )
+    private List<Order> orders;
 
     public User(String fullName, String email, String password, String phone, List<Role> roles) {
         this.fullName = fullName;
@@ -77,6 +86,14 @@ public class User implements UserDetails {
         }
         newAddress.setUser(this);
         addresses.add(newAddress);
+    }
+
+    public void addOrders(Order newOrder){
+        if (orders != null){
+            orders = new ArrayList<>();
+        }
+        newOrder.setUser(this);
+        orders.add(newOrder);
     }
 
     public void addToken(ConfirmationToken token){

@@ -172,7 +172,7 @@ function renderCard(book) {
       <span class="card-discount">${book.finalPrice}đ</span>
       <span class="card-price">${book.price}đ</span>
     </div>
-    <a href="#" class="card-link">mua sách &rarr;</a>
+    <a href="/booksale/book/${book.bookId}" class="card-link">mua sách</a>
   </div>
 </div>`;
 }
@@ -189,11 +189,8 @@ function titleHandler(title) {
 // HANDLE TAB ON CATEGORY BOOK
 const categoryLinkEl = document.querySelectorAll(".bs-link");
 
-console.log(categoryLinkEl);
-
 categoryLinkEl.forEach((link) => {
   link.addEventListener("click", (event) => {
-    console.log("CLICK");
     const listContainer = event.target.closest(".bookshelf-list");
     removeSelectedLinks(listContainer);
     event.target.parentElement.classList.add("selected");

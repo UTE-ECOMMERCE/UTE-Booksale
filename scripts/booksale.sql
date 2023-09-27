@@ -11,6 +11,202 @@ CREATE TABLE Authors (
   country NVARCHAR(100)
 )auto_increment=1;
 
+
+
+DROP TABLE IF EXISTS `Categories`;
+CREATE TABLE Categories (
+  category_id int  PRIMARY KEY auto_increment,
+  name VARCHAR(255),
+  is_active tinyint
+)auto_increment=1;
+
+
+DROP TABLE IF EXISTS `subcategories`;
+CREATE TABLE Sub_categories (
+  subcategory_id int PRIMARY KEY auto_increment,
+  name VARCHAR(255),
+  category_id int,
+  
+  constraint `FK_sub_categories_categories`  FOREIGN KEY(`category_id`) References Categories(`category_id`)
+)auto_increment=1;
+
+
+DROP TABLE IF EXISTS `Publishers`;
+CREATE TABLE Publishers (
+  publisher_id int PRIMARY KEY auto_increment,
+  name VARCHAR(255),
+  address VARCHAR(255),
+  phone VARCHAR(20),
+  is_active tinyint
+)auto_increment=1;
+
+
+DROP TABLE IF EXISTS `Books`;
+CREATE TABLE Books (
+  book_id int  PRIMARY KEY auto_increment,
+  title VARCHAR(255),
+  author_id int,
+  publisher_id int,
+  publication_year INT,
+  discount int,
+  description text,
+  cover_type varchar(20),
+  main_img text,
+  price DECIMAL(10, 3),
+  quantity INT,
+  category_id int,
+  total_pages int,
+  subcategory_id int,
+  is_active tinyint,
+  
+   constraint `FK_books_authors` FOREIGN KEY(`author_id`) References Authors(`author_id`),
+   constraint `FK_books_category` FOREIGN KEY(`category_id`) References Categories(`category_id`),
+   constraint `FK_books_subcategory` foreign key(`subcategory_id`) references Sub_categories(`subcategory_id`) ,
+   constraint `FK_books_publisher` foreign key(`publisher_id`) references Publishers(`publisher_id`) 
+) auto_increment=1;
+
+
+DROP Table if exists `Images`;
+CREATE TABLE Images(
+	img_id int auto_increment primary key,
+    img_url text not null,
+    book_id int,
+    
+    constraint `FK_image_book` foreign key(`book_id`) references Books(`book_id`)
+)auto_increment=1;
+
+
+Drop table if exists `Book_Category`;
+CREATE TABLE Book_Category(
+	book_id int not null,
+    category_id int not null,
+	constraint `FK_bookcategory_book` FOREIGN KEY(`book_id`) References Books(`book_id`),
+    constraint `FK_bookcategory_category` FOREIGN KEY(`category_id`) References Categories(`category_id`)
+);
+
+
+
+Drop table if exists `Book_Subcategory`;
+CREATE TABLE Book_Subcategory(
+	book_id int not null,
+    subcategory_id int not null,
+    
+	constraint `FK_booksubcategory_book` FOREIGN KEY(`book_id`) References Books(`book_id`),
+    constraint `FK_booksubcategory_subcategory` FOREIGN KEY(`subcategory_id`) References Sub_Categories(`subcategory_id`)
+);
+
+
+
+DROP TABLE IF EXISTS `Roles`;
+CREATE TABLE Roles (
+  role_id INT PRIMARY KEY,
+  role_name ENUM('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')
+);
+
+
+DROP TABLE IF EXISTS `Users`;
+CREATE TABLE Users (
+  user_id bigint PRIMARY KEY auto_increment,
+  full_name NVARCHAR(255),
+  email VARCHAR(255) unique not null,
+  password VARCHAR(255) not null,
+  phone VARCHAR(20),
+  enable tinyint,
+  is_lock tinyint
+)auto_increment=1;
+
+
+DROP TABLE IF EXISTS `User_Role`;
+CREATE TABLE `User_Role`(
+	user_id bigint not null,
+    role_id int not null,
+    constraint `user_role_user` foreign key(`user_id`) references Users(`user_id`),
+    constraint `user_role_role` foreign key(`role_id`) references Roles(`role_id`)
+);
+
+DROP TABLE IF EXISTS `Carts`;
+CREATE TABLE `Carts` (
+	cart_id bigint not null PRIMARY KEY auto_increment,
+    user_id bigint not null,
+	constraint `fk_cart_user` foreign key(`user_id`) references Users(`user_id`)
+)auto_increment=1;
+
+DROP TABLE IF EXISTS `Cart_Book`;
+CREATE TABLE `Cart_Book`(
+	cart_id bigint not null,
+    book_id int not null,
+    constraint `fk_cart_book_cart` foreign key(`cart_id`) references Carts(`cart_id`),
+    constraint `fk_cart_book_book` foreign key(`book_id`) references Books(`book_id`),
+    primary key(cart_id, book_id)
+);
+
+DROP TABLE IF EXISTS `Comments`;
+CREATE TABLE `Comments`(
+	id bigint not null primary key auto_increment,
+    title NVARCHAR(255),
+    content TEXT,
+    created_at DATETIME,
+    status tinyint,
+    book_id int not null,
+    user_id bigint not null,
+    
+    CONSTRAINT `fk_comment_book` foreign key(`book_id`) references Books(`book_id`),
+    CONSTRAINT `fk_comment_user` foreign key(`user_id`) references Users(`user_id`)
+)auto_increment=1;
+
+DROP TABLE IF EXISTS `confirmation_token`;
+CREATE TABLE confirmation_token (
+  token_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  token VARCHAR(255) not null,
+  created_at DATETIME not null,
+  expired_at DATETIME not null,
+  confirm_at DATETIME,
+  user_id BIGINT,
+  CONSTRAINT `FK_token_user` FOREIGN KEY (user_id) REFERENCES Users(user_id)
+)AUTO_INCREMENT=1;
+
+
+DROP TABLE IF EXISTS `address`;
+CREATE TABLE address (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  province VARCHAR(255),
+  district VARCHAR(255),
+  ward VARCHAR(255),
+  street VARCHAR(255),
+  type VARCHAR(255),
+  description VARCHAR(300),
+  user_id BIGINT NOT NULL,
+ CONSTRAINT `FK_address_user` FOREIGN KEY (user_id) REFERENCES users(user_id)
+ 
+)AUTO_INCREMENT=1;
+
+
+DROP TABLE IF EXISTS `Orders`;
+CREATE TABLE Orders (
+  order_id bigint PRIMARY KEY,
+  user_id bigint,
+  order_date DATE,
+  total_price DECIMAL(10, 2),
+  status tinyint default 0,
+  constraint `FK_orders_customer` FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+
+DROP TABLE IF EXISTS `Order_Items`;
+CREATE TABLE Order_Items (
+  order_item_id bigint PRIMARY KEY,
+  order_id bigint,
+  book_id int,
+  quantity INT,
+  price DECIMAL(10, 2),
+  
+  constraint `FK_order_items_orders` FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+  constraint `FK_order_itens_books` FOREIGN KEY (book_id) REFERENCES Books(book_id)
+);
+
+ALTER TABLE Order_Items ADD CONSTRAINT UNIQUE(order_id, book_id);
+
+-- INSERT AUTHORS DATA
 INSERT INTO Authors (name, biography, country)
 VALUES ( 'Nguyễn Nhật Ánh', '
 Nguyễn Nhật Ánh là một nhà văn nổi tiếng và được yêu thích ở Việt Nam. Sinh ngày 07/05/1955 tại Hà Nội, ông đã gắn bó với viết lách từ thời học sinh và trở thành một trong những tác giả tiêu biểu của văn học trẻ Việt Nam.
@@ -41,14 +237,7 @@ Vũ Trọng Phụng (1912-1939) là một trong những nhà văn tiêu biểu v
 
 Sinh ra trong một gia đình trí thức ở Hà Nội, Vũ Trọng Phụng đã sớm thể hiện đam mê với văn học và nghệ thuật. Ông đã tốt nghiệp trường Quốc học Huế và trở thành một trong những tác giả nổi tiếng nhất của thập kỷ 1930.', 'Việt Nam');
 
-
-DROP TABLE IF EXISTS `Categories`;
-CREATE TABLE Categories (
-  category_id int  PRIMARY KEY auto_increment,
-  name VARCHAR(255),
-  is_active tinyint
-)auto_increment=1;
-
+-- INSERT CATEGORIES
 INSERT INTO Categories (name, is_active) VALUES
 ('Tiểu thuyết', 1),
 ('Kinh tế', 1),
@@ -61,19 +250,7 @@ INSERT INTO Categories (name, is_active) VALUES
 ('Nổi bật', 1),
 ('Giảm giá', 1);
 
-UPDATE Categories SET name = 'Sách kỹ năng' WHERE category_id = 6;
-
-
-DROP TABLE IF EXISTS `subcategories`;
-CREATE TABLE Sub_categories (
-  subcategory_id int PRIMARY KEY auto_increment,
-  name VARCHAR(255),
-  category_id int,
-  
-  constraint `FK_sub_categories_categories`  FOREIGN KEY(`category_id`) References Categories(`category_id`)
-)auto_increment=1;
-
-
+-- INSERT SUBCATEGORY
 INSERT INTO Sub_categories (name, category_id) VALUES
 ('Kinh điển', 1),
 ('Văn học Việt nam', 1),
@@ -87,24 +264,12 @@ INSERT INTO Sub_categories (name, category_id) VALUES
 ('Tâm lý học hành vi', 4),
 ('Lịch sử thế giới', 5),
 ('Lịch sử Việt Nam', 5),
-('Sách tự nhiên', 6),
+('Tâm lý', 6),
 ('Sách kỹ năng sống', 6),
 ('Sách thiếu nhi', 7),
 ('Truyện tranh', 7);
 
-UPDATE Sub_categories SET name = 'Tâm lý' WHERE subcategory_id = 13;
-
-
-DROP TABLE IF EXISTS `Publishers`;
-CREATE TABLE Publishers (
-  publisher_id int PRIMARY KEY auto_increment,
-  name VARCHAR(255),
-  address VARCHAR(255),
-  phone VARCHAR(20),
-  is_active tinyint
-)auto_increment=1;
-
-
+-- INSERT PUBLISHERS
 INSERT INTO Publishers (name, address, phone, is_active) VALUES
 ('Kim Đồng', '123 Đường Sách, Hà Nội', '0123456789', 1),
 ('Văn học', '456 Đường Văn Chương, Hồ Chí Minh', '0987654321', 1),
@@ -112,46 +277,8 @@ INSERT INTO Publishers (name, address, phone, is_active) VALUES
 ('Nhã Nam', '147 Đường Thanh Niên, Hà Nội', '0321548796', 1),
 ('Omegabooks', '951 Đường Chính Trị, Hà Nội', '0987123456', 1);
 
-DROP TABLE IF EXISTS `Books`;
-CREATE TABLE Books (
-  book_id int  PRIMARY KEY auto_increment,
-  title VARCHAR(255),
-  author_id int,
-  publisher_id int,
-  publication_year INT,
-  discount int,
-  main_img text,
-  price DECIMAL(10, 3),
-  quantity INT,
-  category_id int,
-  subcategory_id int,
-  is_active tinyint,
-  
-   constraint `FK_books_authors` FOREIGN KEY(`author_id`) References Authors(`author_id`),
-   constraint `FK_books_category` FOREIGN KEY(`category_id`) References Categories(`category_id`),
-   constraint `FK_books_subcategory` foreign key(`subcategory_id`) references Sub_categories(`subcategory_id`) ,
-   constraint `FK_books_publisher` foreign key(`publisher_id`) references Publishers(`publisher_id`) 
-) auto_increment=1;
 
-
--- INSERT INTO Books (title, author_id, publisher_id, publication_year, discount, main_img, price, quantity, category_id, subcategory_id, is_active)
--- VALUES ('Dã ngoại nơi Mặt sau của Thế giới (Otherside Picnic) 2', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2023/2/8/QZJB7DKY.jpg', 76000, 50, 1, 1, 1),
--- 	('Những cậu bé can đảm thế', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2023/2/8/TGGOCQQQ.jpg', 76000, 60, 1, 3, 1),
---     ('Chú bé mang pyjama sọc', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2023/2/9/5BK3HGO4.jpg', 76000, 60, 1, 3, 1),
---     ('Đi tìm Dora', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2023/2/8/HDEA67JF.jpg', 76000, 60, 1, 3, 1),
---     ('Bản đồ thế giới cà phê', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2023/1/30/K86N2QWU.jpg', 76000, 60, 1, 1, 1),
---     ('Voi con tìm mẹ', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2023/1/5/QTM32K8R.jpg', 76000, 60, 1, 3, 1),
---     ('Điềm lành', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2022/12/13/V5VL3E5N.jpg', 76000, 60, 1, 3, 1),
---     ('Nhóc Nicolas', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2022/12/21/ZACRFIN2.jpg', 76000, 60, 1, 3, 1),
---     ('Nhóc Nicolas phiền muộn', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2022/12/21/WOFCT7SH.jpg', 76000, 60, 1, 3, 1),
---     ('Con người và Biểu tượng', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2022/12/16/GSNU7AJZ.jpg', 76000, 60, 3, 8, 1),
---     ('Phát triển năng lực cảm xúc xã hội', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2022/12/13/SLKMB8TL.jpg', 76000, 60, 6, 14, 1),
---     ('Bụi sao', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2022/10/26/ZZTQBSJD.jpg', 76000, 60, 1, 3, 1),
---     ('Ngày mới - Việt Nam Danh Tác', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2022/10/18/N4KEGXTZ.jpg', 76000, 60, 1, 2, 1),
---     ('Tiếng vọng đèo Khau Chỉa', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2022/10/4/HTZ5DBZ1.jpg', 76000, 60, 1, 2, 1),
---     ('Bố mẹ ơi, con từ đâu tới', 1, 1, 2022, 10, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2021/4/14/B4QRWYV8.jpg', 76000, 60, 7, 15, 1);
-
-
+-- INSERT BOOKS
 -- Văn học kin điển
 INSERT INTO Books (title, author_id, publisher_id, publication_year, discount, main_img, price, quantity, category_id, subcategory_id, is_active) VALUES('Faust - Johann WolfGang Von Goethe', 1, 1, 2023, 30, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2023/6/9/46XLHEM7.jpg', 103000, 100, 1, 1, 1);
 
@@ -695,104 +822,22 @@ INSERT INTO Books (title, author_id, publisher_id, publication_year, discount, m
 
 INSERT INTO Books (title, author_id, publisher_id, publication_year, discount, main_img, price, quantity, category_id, subcategory_id, is_active) VALUES('Tam Thừa Phật Giáo - Truyền Thừa Tinh Túy', 1, 1, 2023, 20, 'http://static.nhanam.com.vn/thumb/0x230/crop/Books/Images/2014/7/18/DL3CM2BQ.jpg', 178000, 100, 6, 13, 1);
 
-DROP Table if exists `Images`;
-CREATE TABLE Images(
-	img_id int auto_increment primary key,
-    img_url text not null,
-    book_id int,
-    
-    constraint `FK_image_book` foreign key(`book_id`) references Books(`book_id`)
-)auto_increment=1;
 
-
-Drop table if exists `Book_Category`;
-CREATE TABLE Book_Category(
-	book_id int not null,
-    category_id int not null,
-    
-	constraint `FK_bookcategory_book` FOREIGN KEY(`book_id`) References Books(`book_id`),
-    constraint `FK_bookcategory_category` FOREIGN KEY(`category_id`) References Categories(`category_id`)
-);
-
-
-Drop table if exists `Book_Subcategory`;
-CREATE TABLE Book_Subcategory(
-	book_id int not null,
-    subcategory_id int not null,
-    
-	constraint `FK_booksubcategory_book` FOREIGN KEY(`book_id`) References Books(`book_id`),
-    constraint `FK_booksubcategory_subcategory` FOREIGN KEY(`subcategory_id`) References Sub_Categories(`subcategory_id`)
-);
-
-
-
-DROP TABLE IF EXISTS `Roles`;
-CREATE TABLE Roles (
-  role_id INT PRIMARY KEY,
-  role_name ENUM('ROLE_CUSTOMER', 'ROLE_MANAGER', 'ROLE_ADMIN')
-);
-
-
-
+-- INSERT ROLES
 INSERT INTO Roles (role_id, role_name) VALUES (1, 'ROLE_CUSTOMER');
 INSERT INTO Roles (role_id, role_name) VALUES (2, 'ROLE_MANAGER');
 INSERT INTO Roles (role_id, role_name) VALUES (3, 'ROLE_ADMIN');
 
-
-DROP TABLE IF EXISTS `Users`;
-CREATE TABLE Users (
-  user_id bigint PRIMARY KEY auto_increment,
-  full_name NVARCHAR(255),
-  email VARCHAR(255) unique not null,
-  password VARCHAR(255) not null,
-  phone VARCHAR(20),
-  enable tinyint,
-  is_lock tinyint
-)auto_increment=1;
-
+-- INSERT USERS password=test123
 INSERT INTO Users (full_name, email, password, phone, enable, is_lock)
-VALUES('Bùi Thanh Duy', 'dtb1742002@gmail.com', '$2a$12$aVNMqqYZnOStzUTPO9f.JOgUWXTrzmgZy9v0UoTuSHq2pZL.3QIFC', '0383314133', 1, 0 );
+VALUES('Bùi Thanh Duy', 'dtb1742002@gmail.com', '$2a$12$aVNMqqYZnOStzUTPO9f.JOgUWXTrzmgZy9v0UoTuSHq2pZL.3QIFC', '0383314133', 1, 0 ); 
 
-
-
-DROP TABLE IF EXISTS `User_Role`;
-CREATE TABLE `User_Role`(
-	user_id bigint not null,
-    role_id int not null,
-    constraint `user_role_user` foreign key(`user_id`) references Users(`user_id`),
-    constraint `user_role_role` foreign key(`role_id`) references Roles(`role_id`)
-);
-
+-- INSERT user_role
 INSERT INTO `User_Role`(user_id, role_id)
 VALUE(1, 1),
 	(1,2);
 
-DROP TABLE IF EXISTS `confirmation_token`;
-CREATE TABLE confirmation_token (
-  token_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  token VARCHAR(255) not null,
-  created_at DATETIME not null,
-  expired_at DATETIME not null,
-  confirm_at DATETIME,
-  user_id BIGINT,
-  CONSTRAINT `FK_token_user` FOREIGN KEY (user_id) REFERENCES Users(user_id)
-)AUTO_INCREMENT=1;
-
-
-DROP TABLE IF EXISTS `address`;
-CREATE TABLE address (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  province VARCHAR(255),
-  district VARCHAR(255),
-  ward VARCHAR(255),
-  street VARCHAR(255),
-  type VARCHAR(255),
-  description VARCHAR(300),
-  user_id BIGINT NOT NULL,
- CONSTRAINT `FK_address_user` FOREIGN KEY (user_id) REFERENCES users(user_id)
- 
-)AUTO_INCREMENT=1;
-
+-- INSERT ADDRESS
 INSERT INTO address (province, district, ward, street, type, description, user_id)
 VALUES
 ('Hà Nội', 'Quận Ba Đình', 'Phường Cống Vị', 'Đường Kim Mã', 'Nhà riêng', 'Địa chỉ số 1', 1),
@@ -801,30 +846,12 @@ VALUES
 
 
 
-DROP TABLE IF EXISTS `Orders`;
-CREATE TABLE Orders (
-  order_id bigint PRIMARY KEY,
-  user_id bigint,
-  order_date DATE,
-  total_price DECIMAL(10, 2),
-  constraint `FK_orders_customer` FOREIGN KEY (user_id) REFERENCES Users(user_id)
-);
 
-DROP TABLE IF EXISTS `Order_Items`;
-CREATE TABLE Order_Items (
-  order_item_id bigint PRIMARY KEY,
-  order_id bigint,
-  book_id int,
-  quantity INT,
-  price DECIMAL(10, 2),
-  constraint `FK_order_items_orders` FOREIGN KEY (order_id) REFERENCES Orders(order_id),
-  constraint `FK_order_itens_books` FOREIGN KEY (book_id) REFERENCES Books(book_id)
-);
 
-SELECT b.book_id, b.author_id, b.discount, b.is_active, b.main_img, b.price, b.publication_year, b.publisher_id, b.quantity, b.title
-FROM books b
-JOIN book_category c ON b.book_id = c.book_id
-WHERE c.category_id = 2;
+
+
+
+
 
 
 -- // INSERT BOOK_CATEGORY PROCEDURE

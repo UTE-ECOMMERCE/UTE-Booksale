@@ -16,7 +16,7 @@
         <nav class="sidebar">
             <ul class="sidebar-menu">
                 <li class="sidebar-menu-item">
-                    <a href="index.html" class="sidebar-menu-link"
+                    <a th:href="@{/}" class="sidebar-menu-link"
                     ><ion-icon class="start-icon" name="home-sharp"></ion-icon
                     ><span>Trang chủ</span></a
                     >
@@ -55,28 +55,8 @@
         <div class="category-books">
             <h2 class="heading-secondary margin-bottom-super" th:text="${category.name}">
             </h2>
+<!--            Book containers-->
             <div class="books grid grid-4--columns">
-                <div class="book-card"  th:each="book : ${books}">
-                    <span class="discount-tag" th:text="'-' + ${book.discount} + '%'"></span>
-                    <img
-                            th:src="${book.mainImg}"
-                            alt="Book Cover"
-                            class="card-img"
-                    />
-                    <div class="card-body">
-                        <h3 class="card-title" th:text="${book.title}"></h3>
-                        <div class="rating card-rating" >
-                  <span class="rating-number">4.8</span
-                  ><span><ion-icon name="star"></ion-icon></span
-                        ><span class="rating-text">Đã bán 200</span>
-                        </div>
-                        <div class="card-prices">
-                            <span class="card-discount" th:text="${book.finalPrice} + 'đ'"></span>
-                            <span class="card-price" th:text="${book.price} + 'đ'"></span>
-                        </div>
-                        <a href="#" class="card-link">mua sách &rarr;</a>
-                    </div>
-                </div>
             </div>
 
             <div class="pagination">

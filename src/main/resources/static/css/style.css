@@ -148,6 +148,18 @@ header {
   font-size: 3.2rem;
 }
 
+.cart-quantity {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  background-color: #fab005;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.3rem 0.5rem;
+  border-radius: 50%;
+}
+
 .header-link.category {
   display: flex;
   align-items: center;
@@ -573,11 +585,11 @@ header {
 }
 
 .card-img {
-  width: 100%;
-  max-width: 12rem;
-  height: auto;
-  margin: 0 auto;
+   width: 12rem;
+   height: 18rem;
+   margin: 0 auto;
 }
+
 
 .card-body {
   padding: 1rem 1.2rem 1.2rem 1.2rem;
@@ -657,6 +669,7 @@ header {
 }
 .btn-bs-all {
   background-color: #fab005;
+  text-decoration: none;
 }
 
 .btn-bs-all:hover {

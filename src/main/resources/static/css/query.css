@@ -232,4 +232,9 @@
     max-width: 70%;
     height: 70%;
   }
+
+  .card-img{
+    width: 8rem;
+    height: 12rem;
+  }
 }

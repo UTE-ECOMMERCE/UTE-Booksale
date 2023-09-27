@@ -88,11 +88,11 @@
 
 
                 <div class="bookshelf" th:each="cat:  ${categoriesMap.keySet()}">
-                    <h2 class="heading-secondary bookshelf-heading" th:text="${categoriesMap.get(cat).name}">
-                        Văn học - Tiểu thuyết
+                    <h2 class="heading-secondary bookshelf-heading" th:text="${categoriesMap.get(cat).categoryName}">
+
                     </h2>
                     <ul class="bookshelf-list">
-                        <li  th:each="subcat, iterStat: ${categoriesMap.get(cat).subCategories}"
+                        <li  th:each="subcat, iterStat: ${categoriesMap.get(cat).subcategories}"
                              th:class="${iterStat.index == 0 ? 'selected' : ''}">
                             <a class="bs-link" th:data-number="${subcat.subCategoryId}" th:text="${subcat.name}"></a>
                         </li>
@@ -124,7 +124,7 @@
                                         <span class="card-discount" th:text="${book.finalPrice}"></span>
                                         <span class="card-price" th:text="${book.price}"></span>
                                     </div>
-                                    <a href="#" class="card-link">mua sách &rarr;</a>
+                                    <a href="#" th:href="@{/book/__${book.bookId}__}" class="card-link">mua sách &rarr;</a>
                                 </div>
 
                             </div>
@@ -132,7 +132,7 @@
                         </div>
 
                         <div class="btn-all__container">
-                            <button class="btn btn--full btn-bs-all">Xem tất cả</button>
+                            <a class="btn btn--full btn-bs-all" th:href="@{|/book/category/${categoriesMap.get(cat).kebabCaseName}|} + '?page=0'">Xem tất cả</a>
                         </div>
                     </div>
                 </div>
