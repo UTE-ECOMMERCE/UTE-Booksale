@@ -33,11 +33,11 @@ public class WebSecurityConfig {
         throws Exception{
         http.authorizeHttpRequests(request ->
                 request
-                        .requestMatchers("/", "/error/*", "/add-to-cart/**", "/cart/**", "/book/**", "/register", "/api/**").permitAll()
+                        .requestMatchers("/", "/error/*", "/add-to-cart/**", "/cart/**", "/category/**", "/book/**", "/register", "/api/**").permitAll()
                         .requestMatchers("/customer/**").hasRole("CUSTOMER")
                         .requestMatchers("/system/**").hasRole("ADMIN")
                         .requestMatchers("/imgs/**", "/css/**", "/scripts/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                         )
                 .formLogin(form -> form
                         .loginPage("/login")

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org">
   <head th:replace="~{ common/head.html :: common_header(~{::title},~{::link}) }">
     <title>Your Cart</title>
 
@@ -19,44 +20,23 @@
         </h2>
 
         <div class="container grid cart-grid">
-          <div class="cart-main">
-            <div class="book-container">
-              <h1 class="cart-head">Sách đã thêm</h1>
-              <div class="cart-book">
-                <form action="#" class="cart-book__form">
-                  <input type="checkbox" class="checkbox margin-right-md" />
-                  <div class="img-box margin-right-sm">
-                    <img
-                            class="cart-img"
-                            src="imgs/top-books/book1.jpeg"
-                            alt="Cay cam ngot cua toi"
-                    />
-                  </div>
-                  <p class="cart-book-title margin-right-super">
-                    Cây cam ngọt của tôi
-                  </p>
+          <div class="cart-main" th:switch="${#lists.size(cart.items)}">
 
-                  <div class="price-tag margin-right-super">
-                    <p class="price-tag__sale">67.000<span>đ</span></p>
-                    <p class="price-tag__origin">100.000<span>đ</span></p>
-                  </div>
-                  <div
-                          class="quantity-box__cart quantity-box margin-right-super"
-                  >
-                    <button class="btn-decrease">-</button>
-                    <input type="number" min="1" value="1" />
-                    <button class="btn-increase">+</button>
-                  </div>
-                  <button type="submit" class="btn-detele-item">
-                    <ion-icon
-                            class="delete-icon"
-                            name="trash-outline"
-                    ></ion-icon>
-                  </button>
-                </form>
-              </div>
-              <div class="cart-book" th:each="item: ${cart.items}">
+            <div th:case="'0'"class="book-container">
+                <h1>Giỏ hàng trống</h1>
+                <img
+                        class="cart-empty-img"
+                        src="https://assets.materialup.com/uploads/66fb8bdf-29db-40a2-996b-60f3192ea7f0/preview.png"
+                        alt="Empty cart"
+                />
+                <p class="cart-description">Thêm sách từ cửa hàng của chúng tôi.</p>
+                <a  href="#" class="btn-cart-empty">Shop Now</a>
+            </div>
+              <div th:case="*" class="book-container">
+              <h1  class="cart-head">Sách đã thêm</h1>
+              <div  class="cart-book" th:each="item: ${cart.items}">
                 <form class="cart-book__form">
+                  <input type="hidden" class="book-id" th:value="${item.bookId}">
                   <input type="checkbox" class="checkbox margin-right-md" />
                   <div class="img-box margin-right-sm">
                     <img class="cart-img" th:src="${item.imgUrl}" th:alt="${item.bookTitle}" />
@@ -149,7 +129,10 @@
             </div>
           </div>
           <aside class="customer-info">
-            <div class="address-box">
+            <div sec:authorize="isAnonymous()" class="address-box">
+              <a class="adress-link" href="">Địa chỉ nhận hàng</a>
+            </div>
+            <div sec:authorize="hasRole('CUSTOMER')" class="address-box">
               <div class="address-header">
                 <p class="address-heading">Giao tới</p>
                 <a href="#" class="change-address__link">Thay đổi</a>
@@ -177,6 +160,7 @@
                 </label>
                 <label class="payment-method-option">
                   <input
+                          checked
                           type="radio"
                           name="paymentMethod"
                           value="bankTransfer"
@@ -190,20 +174,21 @@
               <h2 class="price-title">Thanh toán</h2>
               <div class="subtotal">
                 <span>Tạm tính:</span>
-                <span>0đ</span>
+                <p><span class="money">0.000</span><span>đ</span></p>
               </div>
               <div class="shipping">
                 <span>Phí ship:</span>
-                <span>15.000đ</span>
+                <p><span class="money">15000</span><span>đ</span></p>
               </div>
               <div class="discount">
                 <span>Giảm giá:</span>
-                <span>0đ</span>
+                <p><span class="money">0.000</span><span>đ</span></p>
               </div>
               <div class="total">
                 <span>Tổng tiền:</span>
-                <span>0đ</span>
+                <p><span class="money">0.000</span><span>đ</span></p>
               </div>
+            </div>
             </div>
             <button class="btn btn--radius btn-order">Đặt sách</button>
           </aside>
@@ -214,6 +199,8 @@
     <footer th:replace="~{common/footer.html :: copy}" >
     </footer>
 
+    <script defer th:src="@{/scripts/cart.js}"></script>
+    <script defer th:src="@{/scripts/user.js}"></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"

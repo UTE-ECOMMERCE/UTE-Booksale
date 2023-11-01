@@ -32,6 +32,7 @@
           </button>
         </form>
 
+
         <nav class="main-nav">
           <button class="btn-search-mobile">
             <ion-icon name="search" class="search-icon"></ion-icon>
@@ -41,7 +42,7 @@
               <a th:href="@{/cart}" class="cart header-link"
               ><ion-icon class="cart-icon" name="cart-sharp"></ion-icon
               ></a>
-              <span class="cart-quantity">0</span>
+              <span class="cart-quantity" th:text="${cart != null ? cart.items.size() : '0'}"></span>
             </li>
             <li class="main-nav-item" sec:authorize="isAnonymous()">
               <a th:href="@{/login}" class="header-link">Đăng nhập</a>
@@ -73,21 +74,19 @@
               <a href="#" class="nav-link dropdown-toggle">Danh mục</a>
               <ul class="category-dropdown dropdown-menu" >
                 <li th:each="c : ${categories}">
-                  <a class="category-link" href="#" th:href="@{|/book/category/${c.kebabCaseName}|}"
+                  <a class="category-link" th:href="@{|/book/category/${c.kebabCaseName}|}"
                    th:text="${c.categoryName}"></a
                   >
                 </li>
               </ul>
             </li>
-
-            <li><a href="#" class="nav-link">Sách mới</a></li>
-            <li><a href="#" class="nav-link">Sách bán chạy</a></li>
-            <li><a href="#" class="nav-link">Sản phẩm nổi bật</a></li>
-            <li><a href="#" class="nav-link">Sách giảm giá</a></li>
+            <li><a th:href="@{/book/category/sach-moi}" class="nav-link">Sách mới</a></li>
+            <li><a th:href="@{/book/category/ban-chay}" class="nav-link">Sách bán chạy</a></li>
+            <li><a th:href="@{/book/category/noi-bat}" class="nav-link">Sản phẩm nổi bật</a></li>
+            <li><a th:href="@{/book/category/giam-gia}" class="nav-link">Sách giảm giá</a></li>
           </ul>
         </div>
       </nav>
     </section>
-
 </body>
 </html>

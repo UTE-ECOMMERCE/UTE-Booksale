@@ -6,19 +6,19 @@ import com.ecommerce.booksale.book.category.CategoryMapper;
 import com.ecommerce.booksale.book.category.CategoryService;
 import com.ecommerce.booksale.book.subcategory.SubCategory;
 import com.ecommerce.booksale.book.subcategory.SubCategoryService;
+import com.ecommerce.booksale.cart.ShoppingCart;
 import com.ecommerce.booksale.exception.BookNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 @AllArgsConstructor
+@SessionAttributes("cart")
 public class BookController {
 
     private final BookService bookService;
@@ -48,7 +48,7 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}")
-    public String accessBuyPage( @PathVariable("id") String bookId, Model model){
+    public String accessBuyPage( @PathVariable("id") String bookId,  Model model){
 
             int id = Integer.parseInt(bookId);
             BookDTO foundBook = this.bookService.findBook(id);

@@ -98,44 +98,43 @@
                         </li>
                     </ul>
                     <div class="bookshelf-container">
-                        <div
-                                class="books-container grid grid-5--columns margin-bottom-lg"
-                        >
+                        <div class="books-container grid grid-5--columns margin-bottom-lg">
                             <div
                                     class="bs-img-box"
                                     role="img"
                                     aria-label="Ảnh bìa tiểu thuyết"
                             ></div>
                             <div class="book-card" th:each="book : ${__${cat}__Books}">
-                                <span class="discount-tag" th:text=" '-' + ${book.discount} + '%' "></span>
-                                <img
-                                        th:src="${book.mainImg}"
-                                        alt="Book Cover"
-                                        class="card-img"
-                                />
-                                <div class="card-body">
-                                    <h3 class="card-title" th:text="${book.title}"></h3>
-                                    <div  class="card-rating rating">
-                                        <span class="rating-number">4.8</span>
-                                        <span><ion-icon name="star"></ion-icon></span>
-                                        <span class="rating-text">Đã bán 200</span>
+                                <a  th:href="@{/book/__${book.bookId}__}" class="book-link">
+                                    <span class="discount-tag" th:text=" '-' + ${book.discount} + '%' "></span>
+                                    <div class="img-container">
+                                        <img
+                                                th:src="${book.mainImg}"
+                                                alt="Book Cover"
+                                                class="card-img"
+                                        />
                                     </div>
-                                    <div class="card-prices">
-                                        <span class="card-discount" th:text="${book.finalPrice}"></span>
-                                        <span class="card-price" th:text="${book.price}"></span>
+                                    <div class="card-body">
+                                        <p class="card-title" th:text="${book.title}"></p>
+                                        <div class="rating card-rating">
+                                            <span class="rating-number">4.8</span>
+                                            <span><ion-icon name="star"></ion-icon></span
+                                        ><span class="rating-text">Đã bán 200</span>
+                                        </div>
+                                        <div class="card-prices">
+                                            <span class="card-discount" th:text="${book.finalPrice}"></span>
+                                            <span class="card-price" th:text="${book.price}"></span>
+                                        </div>
                                     </div>
-                                    <a href="#" th:href="@{/book/__${book.bookId}__}" class="card-link">mua sách &rarr;</a>
-                                </div>
-
+                                </a>
                             </div>
-
                         </div>
 
                         <div class="btn-all__container">
                             <a class="btn btn--full btn-bs-all" th:href="@{|/book/category/${categoriesMap.get(cat).kebabCaseName}|} + '?page=0'">Xem tất cả</a>
                         </div>
                     </div>
-                </div>
+
 
             </section>
         </div>

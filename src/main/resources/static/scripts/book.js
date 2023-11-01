@@ -1,4 +1,9 @@
+import { stickyHeader, renderCard } from "./utils.js";
+
 const categoryLink = document.querySelector(".category-item");
+
+const sibebarCutPoint = document.querySelector(".sidebar");
+stickyHeader(sibebarCutPoint);
 
 categoryLink.addEventListener("click", () => {
   categoryLink.classList.toggle("show-sub-items");
@@ -22,7 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const updatePage = () => {
     generatePaginationButtons();
-    const paginationButtons = paginationContainer.querySelectorAll(".pagination-btn");
+    const paginationButtons =
+      paginationContainer.querySelectorAll(".pagination-btn");
     paginationButtons.forEach((button) => {
       const page = parseInt(button.getAttribute("page"));
       if (page === currentPage) {
@@ -50,7 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     for (let i = startPage; i <= endPage; i++) {
-      buttonMarkup += `<a class="pagination-btn${i === currentPage ? " active" : ""}" page="${i}" path="${path}">${i}</a>`;
+      buttonMarkup += `<a class="pagination-btn${
+        i === currentPage ? " active" : ""
+      }" page="${i}" path="${path}">${i}</a>`;
     }
 
     if (showEndEllipsis) {
@@ -69,7 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.addEventListener("click", (event) => {
         event.preventDefault();
         const page = event.target.getAttribute("page");
-        const url = `http://localhost:8080/booksale/api/book/category/${path}?page=${page - 1}`;
+        const url = `http://localhost:8080/booksale/api/book/category/${path}?page=${
+          page - 1
+        }`;
 
         loadDataCategoryBooks(url, container);
         currentPage = parseInt(page);
@@ -107,7 +117,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentPage > 1) {
       currentPage--;
       loadDataCategoryBooks(
-        `http://localhost:8080/booksale/api/book/category/${path}?page=${currentPage - 1}`,
+        `http://localhost:8080/booksale/api/book/category/${path}?page=${
+          currentPage - 1
+        }`,
         container
       );
     }
@@ -117,7 +129,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentPage < totalPages) {
       currentPage++;
       loadDataCategoryBooks(
-        `http://localhost:8080/booksale/api/book/category/${path}?page=${currentPage - 1}`,
+        `http://localhost:8080/booksale/api/book/category/${path}?page=${
+          currentPage - 1
+        }`,
         container
       );
     }

@@ -1,3 +1,4 @@
+
 /* ******************************************** */
 /* NAVIGATION BAR */
 /* ******************************************** */
@@ -277,7 +278,6 @@ header {
   color: #00817e;
 }
 
-
 /* ******************************************** */
 /* STICKY NAVIGATION  */
 /* ******************************************** */
@@ -296,7 +296,6 @@ header {
 .sticky .section-slider {
   margin-top: 14rem;
 }
-
 
 /* ******************************************** */
 /* SLIDER  */
@@ -580,16 +579,30 @@ header {
   position: relative;
 }
 
+.book-link:link,
+.book-link:visited {
+  text-decoration: none;
+  color: #444;
+}
+
+.book-link:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 .book-card:hover {
   box-shadow: 0rem 0rem 4.8rem rgba(0, 0, 0, 0.075);
 }
 
-.card-img {
-   width: 12rem;
-   height: 18rem;
-   margin: 0 auto;
+.img-container {
+  text-align: center;
 }
 
+.card-img {
+  width: 12rem;
+  height: 18rem;
+  margin: 0 auto;
+}
 
 .card-body {
   padding: 1rem 1.2rem 1.2rem 1.2rem;
@@ -602,6 +615,14 @@ header {
   font-size: 1.6rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-title:hover {
+  color: #00817e;
 }
 
 .rating {
@@ -640,7 +661,7 @@ header {
 
 .card-discount {
   color: #f03e3e;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: 500;
 }
 
