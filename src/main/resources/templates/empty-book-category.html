@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Oops</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{ common/head.html :: common_header(~{::title},~{::link}) }">
+    <title>500 error</title>
+
+    <link rel="stylesheet" th:href="@{/css/error.css}" >
+</head>
+
+<body>
+<!-- HEADER -->
+<header th:insert="~{common/header.html :: copy}"></header>
+<main class="error-page container">
+    <div class="error-card">
+        <p class="error-title"><span>Chưa có sản phẩm</span></p>
+        <p class="error-content">Vui lòng quay lại sau!</p>
+    </div>
+</main>
+<!-- FOOTER -->
+<footer th:replace="~{common/footer.html :: copy}" >
+</footer>
+
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+></script>
+</body>
+</html>
+</body>
+</html>

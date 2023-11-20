@@ -1,13 +1,15 @@
 package com.ecommerce.booksale.user;
 
 import com.ecommerce.booksale.user.address.Address;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
     private String email;
     private String fullName;

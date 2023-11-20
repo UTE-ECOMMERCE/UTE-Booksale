@@ -1,7 +1,7 @@
-package com.ecommerce.booksale.registration;
+package com.ecommerce.booksale.authentication.registration;
 
 
-import com.ecommerce.booksale.user.User;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/register")
+@SessionAttributes("cart")
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -17,7 +18,7 @@ public class RegistrationController {
     @GetMapping
     public String handleGetRegister(Model model){
         // set object name
-        model.addAttribute("user", new User());
+        model.addAttribute("registerData", RegisterData.builder().build());
         return "register";
     }
 
@@ -29,10 +30,10 @@ public class RegistrationController {
 
     @PostMapping
     public String handlePostRegister(
-            @ModelAttribute("user") User user,
-            @RequestParam("confirm-password") String confirmPassword, Model model){
+            @ModelAttribute("registerData") @Valid  RegisterData registerData,
+            Model model){
         try{
-            registrationService.register(user, confirmPassword);
+            registrationService.register(registerData, registerData.getConfirmPassword());
         }catch (Exception e){
             // set object name
             model.addAttribute("error", e.getMessage());

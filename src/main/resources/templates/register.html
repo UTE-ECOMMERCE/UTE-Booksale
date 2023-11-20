@@ -27,8 +27,8 @@
           <h3 class="heading-tertiary login-heading">Đăng ký tài khoản</h3>
 
           <!-- FORM REGISTER-->
-          <form class="authen-form" action="#" th:action="@{/register}"
-                th:object="${user}" method="POST">
+          <form class="authen-form"  th:action="@{/register}"
+                th:object="${registerData}" method="POST">
 
             <div class="error-msg-box" th:if="${error}"><p class="error-msg" th:text="${error}"></p></div>
 
@@ -71,6 +71,7 @@
               >
               <input
                 type="password"
+                th:field="*{confirmPassword}"
                 name="confirm-password"
                 id="confirm-password"
               />

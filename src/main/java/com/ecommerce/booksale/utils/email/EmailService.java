@@ -1,4 +1,4 @@
-package com.ecommerce.booksale.email;
+package com.ecommerce.booksale.utils.email;
 
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

@@ -7,12 +7,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const originPriceElement = document.querySelector(".subtotal .money");
     const dicountPriceElement = document.querySelector(".discount .money");
     const shippingFeeElement = document.querySelector(".shipping .money");
+     const createOrderBtn = document.querySelector(".btn-order");
+      const addressForm = document.querySelector(".address-form_cart");
+
+      console.log(createOrderBtn);
 
     // Initialize total price
       let totalPrice = 0;
       let totalOriginPrice = 0;
       let discountPrice = 0;
       let shippingFee = parseFloat(shippingFeeElement.textContent);
+
+      createOrderBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+        console.log("Inside create order function");
+          addressForm.submit();
+        });
 
       // Function to update the total price based on the checkbox state
       const updateTotalPrice = () => {

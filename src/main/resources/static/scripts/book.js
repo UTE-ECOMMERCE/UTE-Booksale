@@ -11,7 +11,7 @@ categoryLink.addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   let currentPage = 1; // Current page number
-  let totalPages = 10; // Total number of pages
+  let totalPages = 3; // Total number of pages
 
   const prevButton = document.querySelector(".prev");
   const nextButton = document.querySelector(".next");
@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const path = prevButton.getAttribute("path");
 
-  loadDataCategoryBooks(
-    `http://localhost:8080/booksale/api/book/category/${path}?page=0`,
-    container
-  );
+//  loadDataCategoryBooks(
+//    `http://localhost:8080/booksale/api/book/category/${path}?page=0`,
+//    container
+//  );
 
   const updatePage = () => {
     generatePaginationButtons();

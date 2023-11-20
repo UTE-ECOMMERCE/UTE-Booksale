@@ -1,4 +1,4 @@
-package com.ecommerce.booksale.registration;
+package com.ecommerce.booksale.authentication.registration;
 
 import java.util.function.Predicate;
 

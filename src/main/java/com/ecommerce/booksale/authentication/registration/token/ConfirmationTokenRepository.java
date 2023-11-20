@@ -1,4 +1,4 @@
-package com.ecommerce.booksale.registration.token;
+package com.ecommerce.booksale.authentication.registration.token;
 
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;

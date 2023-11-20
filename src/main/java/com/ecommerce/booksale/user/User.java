@@ -3,13 +3,10 @@ package com.ecommerce.booksale.user;
 
 import com.ecommerce.booksale.order.Order;
 import com.ecommerce.booksale.user.role.Role;
-import com.ecommerce.booksale.registration.token.ConfirmationToken;
+import com.ecommerce.booksale.authentication.registration.token.ConfirmationToken;
 import com.ecommerce.booksale.user.address.Address;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +20,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="Users")

@@ -1,4 +1,4 @@
-package com.ecommerce.booksale.constants;
+package com.ecommerce.booksale.utils.constants;
 
 public interface AuthenError {
    String NOT_MATCH_PASSWORD_ERROR = "Mật khẩu không khớp";

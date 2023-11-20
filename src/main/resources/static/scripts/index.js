@@ -88,7 +88,7 @@ function loadDataBooks(url, container) {
 
 function renderCard(book) {
   return `<div class="book-card">
-              <a href="book-detail.html" class="book-link">
+              <a href="/booksale/book/${book.bookId}" class="book-link">
                 <span class="discount-tag">-${book.discount}%</span>
                 <div class="img-container">
                   <img

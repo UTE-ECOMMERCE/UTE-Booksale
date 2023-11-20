@@ -14,7 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity(name="roles")
 public class Role {
-
     @Id
     @Column(name="role_id")
     private Integer roleId;

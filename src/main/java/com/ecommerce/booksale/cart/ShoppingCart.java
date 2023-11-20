@@ -16,8 +16,6 @@ import java.util.List;
 public class ShoppingCart {
     private List<CartDTO> items = new ArrayList<>();
 
-
-
     public void addBook(CartDTO newItem) {
         boolean isDuplicate = items.stream()
                 .anyMatch(item -> newItem.getBookId() == item.getBookId());

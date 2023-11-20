@@ -22,6 +22,8 @@ public interface BookRepository extends JpaRepository<Book, Integer>, PagingAndS
 
     Page<Book> findByCategories(Category category, Pageable pageable);
 
-    List<Book> findBySubcategories(SubCategory subCategory, Pageable pageable);
+    Page<Book> findBySubcategories(SubCategory subCategory, Pageable pageable);
+
+    Page<Book> findBookByCategoriesAndSubcategories(Category category, SubCategory subCategory, Pageable pageable);
 
 }

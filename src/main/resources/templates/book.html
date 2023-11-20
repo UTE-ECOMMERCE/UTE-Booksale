@@ -33,7 +33,7 @@
                     </a>
                     <ul class="sub-items">
                         <li class="sub-item" th:each="subCat : ${subcategories}">
-                            <a href="#" th:href="@{__${requestURI}__?sub=__${subCat.subCategoryId}__}" class="sub-item-link" th:text="${subCat.name}"></a>
+                            <a href="#" th:href="@{?sub=__${subCat.subCategoryId}__}" class="sub-item-link" th:text="${subCat.name}"></a>
                         </li>
                     </ul>
                 </li>
@@ -57,6 +57,26 @@
             </h2>
 <!--            Book containers-->
             <div class="books grid grid-4--columns">
+                <div class="book-card" th:each="book : ${books}">
+                    <a th:href="@{'/book/' + ${book.bookId}}" class="book-link">
+                        <span class="discount-tag" th:text="${book.discount}"></span>
+                        <div class="img-container">
+                            <img th:src="${book.mainImg}" th:alt="${book.title}" class="card-img" />
+                        </div>
+                        <div class="card-body">
+                            <p class="card-title" th:text="${book.title}"></p>
+                            <div class="rating card-rating">
+                                <span class="rating-number">4.8</span>
+                                <span><ion-icon name="star"></ion-icon></span>
+                                <span class="rating-text">Đã bán 200</span>
+                            </div>
+                            <div class="card-prices">
+                                <span class="card-discount" th:text="${book.price}"></span>
+                                <span class="card-price" th:text="${book.finalPrice}"></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
 
             <div class="pagination">

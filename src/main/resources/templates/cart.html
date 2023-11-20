@@ -1,213 +1,218 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org">
-  <head th:replace="~{ common/head.html :: common_header(~{::title},~{::link}) }">
+<head th:replace="~{ common/head.html :: common_header(~{::title},~{::link}) }">
     <title>Your Cart</title>
 
-    <link rel="stylesheet" th:href="@{/css/user-form.css}" >
-    <link rel="stylesheet" th:href="@{/css/cart.css}" >
+    <link rel="stylesheet" th:href="@{/css/user-form.css}">
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
 
-  </head>
+</head>
 
-  <body>
-    <!-- HEADER -->
-    <header th:insert="~{common/header.html :: copy}"></header>
-    <!-- MAIN CONTENT -->
-    <main>
-      <section class="cart-section">
+<body>
+<!-- HEADER -->
+<header th:insert="~{common/header.html :: copy}"></header>
+<!-- MAIN CONTENT -->
+<main>
+    <section class="cart-section">
         <h2 class="container heading-secondary cart-title margin-bottom-super">
-          Giỏ hàng
+            Giỏ hàng
         </h2>
 
         <div class="container grid cart-grid">
-          <div class="cart-main" th:switch="${#lists.size(cart.items)}">
+            <div class="cart-main" th:switch="${#lists.size(cart.items)}">
 
-            <div th:case="'0'"class="book-container">
-                <h1>Giỏ hàng trống</h1>
-                <img
-                        class="cart-empty-img"
-                        src="https://assets.materialup.com/uploads/66fb8bdf-29db-40a2-996b-60f3192ea7f0/preview.png"
-                        alt="Empty cart"
-                />
-                <p class="cart-description">Thêm sách từ cửa hàng của chúng tôi.</p>
-                <a  href="#" class="btn-cart-empty">Shop Now</a>
-            </div>
-              <div th:case="*" class="book-container">
-              <h1  class="cart-head">Sách đã thêm</h1>
-              <div  class="cart-book" th:each="item: ${cart.items}">
-                <form class="cart-book__form">
-                  <input type="hidden" class="book-id" th:value="${item.bookId}">
-                  <input type="checkbox" class="checkbox margin-right-md" />
-                  <div class="img-box margin-right-sm">
-                    <img class="cart-img" th:src="${item.imgUrl}" th:alt="${item.bookTitle}" />
-                  </div>
-                  <p class="cart-book-title margin-right-super" th:text="${item.bookTitle}"></p>
-                  <div class="price-tag margin-right-super">
-                    <p class="price-tag__sale" th:text="${item.discountPrice + 'đ'}"></p>
-                    <p class="price-tag__origin" th:text="${item.price + 'đ'}"></p>
-                  </div>
-                  <div class="quantity-box__cart quantity-box margin-right-super">
-                    <button class="btn-decrease">-</button>
-                    <input type="number" min="1" th:value="${item.quantity}" />
-                    <button class="btn-increase">+</button>
-                  </div>
-                  <button type="submit" class="btn-detele-item">
-                    <ion-icon class="delete-icon" name="trash-outline"></ion-icon>
-                  </button>
-                </form>
-              </div>
-            </div>
-
-            <div class="address-section">
-              <h1 class="cart-head">Thông tin nhận hàng</h1>
-              <form
-                      action="#"
-                      method="POST"
-                      class="address-form address-form_cart"
-              >
-                <div class="address-group">
-                  <div class="form-control">
-                    <label for="fullName">Họ và tên</label>
-                    <input
-                            type="text"
-                            class="user-name"
-                            id="fullName"
-                            name="fullName"
-                            required
+                <div th:case="'0'" class="book-container">
+                    <h1>Giỏ hàng trống</h1>
+                    <img
+                            class="cart-empty-img"
+                            src="https://assets.materialup.com/uploads/66fb8bdf-29db-40a2-996b-60f3192ea7f0/preview.png"
+                            alt="Empty cart"
                     />
-                  </div>
-
-                  <div class="form-control">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required />
-                  </div>
-
-                  <div class="form-control">
-                    <label for="phone">Số điện thoại</label>
-                    <input type="tel" id="phone" name="phone" required />
-                  </div>
-                  <div class="form-control">
-                    <label for="province">Tỉnh / Thành phố</label>
-                    <select id="province" name="province" required>
-                      <option value="">Chọn tỉnh (thành phố)</option>
-                      <option value="province1">Province 1</option>
-                      <option value="province2">Province 2</option>
-                    </select>
-                  </div>
-
-                  <div class="form-control">
-                    <label for="district">Quận / Huyện</label>
-                    <select id="district" name="district" required>
-                      <option value="">Chọn quận (huyện)</option>
-                    </select>
-                  </div>
-
-                  <div class="form-control">
-                    <label for="ward">Phường / Xã</label>
-                    <select id="ward" name="ward" required>
-                      <option value="">Chọn phường (xã)</option>
-                    </select>
-                  </div>
-
-                  <div class="form-control">
-                    <label for="street">Đường</label>
-                    <input type="text" id="street" name="street" required />
-                  </div>
-
-                  <div class="form-control">
-                    <label for="description">Thêm mô tả</label>
-                    <textarea
-                            type="textarea"
-                            id="description"
-                            name="description"
-                            rows="4"
-                            cols="30"
-                    ></textarea>
-                  </div>
+                    <p class="cart-description">Thêm sách từ cửa hàng của chúng tôi.</p>
+                    <a href="#" class="btn-cart-empty">Shop Now</a>
                 </div>
-              </form>
-            </div>
-          </div>
-          <aside class="customer-info">
-            <div sec:authorize="isAnonymous()" class="address-box">
-              <a class="adress-link" href="">Địa chỉ nhận hàng</a>
-            </div>
-            <div sec:authorize="hasRole('CUSTOMER')" class="address-box">
-              <div class="address-header">
-                <p class="address-heading">Giao tới</p>
-                <a href="#" class="change-address__link">Thay đổi</a>
-              </div>
-              <div class="info">
-                <p class="info-name padding-r-md">Bùi Thanh Duy</p>
-                <p class="info-phone padding-l-md">0383314133</p>
-              </div>
-              <address class="info-address">
-                <span>Nhà</span>
-                1/2 đường số 7, Phường Bình Thọ, Thành phố Thủ Đức, Hồ Chí Minh
-              </address>
-            </div>
-            <!-- payment method -->
-            <div class="payment-method">
-              <h2 class="payment-method-title">Phương thức thanh toán</h2>
-              <div class="payment-method-options">
-                <label class="payment-method-option">
-                  <input type="radio" name="paymentMethod" value="creditCard" />
-                  <span class="payment-method-option-text">Thẻ tín dụng</span>
-                </label>
-                <label class="payment-method-option">
-                  <input type="radio" name="paymentMethod" value="paypal" />
-                  <span class="payment-method-option-text">PayPal</span>
-                </label>
-                <label class="payment-method-option">
-                  <input
-                          checked
-                          type="radio"
-                          name="paymentMethod"
-                          value="bankTransfer"
-                  />
-                  <span class="payment-method-option-text">Tiền mặt</span>
-                </label>
-              </div>
+                <div th:case="*" class="book-container">
+                    <h1 class="cart-head">Sách đã thêm</h1>
+                    <div class="cart-book" th:each="item: ${cart.items}">
+                        <form class="cart-book__form">
+                            <input type="hidden" class="book-id" th:value="${item.bookId}">
+                            <input type="checkbox" class="checkbox margin-right-md"/>
+                            <div class="img-box margin-right-sm">
+                                <img class="cart-img" th:src="${item.imgUrl}" th:alt="${item.bookTitle}"/>
+                            </div>
+                            <p class="cart-book-title margin-right-super" th:text="${item.bookTitle}"></p>
+                            <div class="price-tag margin-right-super">
+                                <p class="price-tag__sale" th:text="${item.discountPrice + 'đ'}"></p>
+                                <p class="price-tag__origin" th:text="${item.price + 'đ'}"></p>
+                            </div>
+                            <div class="quantity-box__cart quantity-box margin-right-super">
+                                <button class="btn-decrease">-</button>
+                                <input type="number" min="1" th:value="${item.quantity}"/>
+                                <button class="btn-increase">+</button>
+                            </div>
+                            <button type="submit" class="btn-detele-item">
+                                <ion-icon class="delete-icon" name="trash-outline"></ion-icon>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="address-section">
+                    <h1 class="cart-head">Thông tin nhận hàng</h1>
+                    <form
+                            th:method="POST"
+                            class="address-form address-form_cart"
+                            th:action="@{/order/create}"
+                            th:object="${userAddress}"
+                    >
+                        <div class="address-group">
+                            <div class="form-control">
+                                <label for="fullName">Họ và tên</label>
+                                <input
+                                        type="text"
+                                        class="user-name"
+                                        id="fullName"
+                                        name="fullName"
+                                        required
+                                        th:field="*{userInformation.fullName}"
+                                />
+                            </div>
+
+                            <div class="form-control">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email"
+                                       th:field="*{userInformation.email}"
+                                       required/>
+                            </div>
+
+                            <div class="form-control">
+                                <label for="phone">Số điện thoại</label>
+                                <input type="tel" id="phone" name="phone" th:field="*{userInformation.phone}" required/>
+                            </div>
+                            <div class="form-control">
+                                <label for="province">Tỉnh / Thành phố</label>
+                                <select id="province" name="province" required th:field="*{province}">
+                                    <option value="">Chọn tỉnh (thành phố)</option>
+                                    <option value="province1">Province 1</option>
+                                    <option value="province2">Province 2</option>
+                                </select>
+                            </div>
+
+                            <div class="form-control">
+                                <label for="district">Quận / Huyện</label>
+                                <select id="district" name="district" required th:field="*{district}">
+                                    <option value="Huyen">Chọn quận (huyện)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-control">
+                                <label for="ward">Phường / Xã</label>
+                                <select id="ward" name="ward" th:field="*{ward}" required>
+                                    <option value="xa">Chọn phường (xã)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-control">
+                                <label for="street">Đường</label>
+                                <input type="text" id="street" name="street" required th:field="*{street}"/>
+                            </div>
+
+                            <div class="form-control">
+                                <label for="description">Thêm mô tả</label>
+                                <textarea
+                                        th:field="*{description}"
+                                        type="textarea"
+                                        id="description"
+                                        name="description"
+                                        rows="4"
+                                        cols="30"
+                                ></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
 
-            <div class="total-price-section">
-              <h2 class="price-title">Thanh toán</h2>
-              <div class="subtotal">
-                <span>Tạm tính:</span>
-                <p><span class="money">0.000</span><span>đ</span></p>
-              </div>
-              <div class="shipping">
-                <span>Phí ship:</span>
-                <p><span class="money">15000</span><span>đ</span></p>
-              </div>
-              <div class="discount">
-                <span>Giảm giá:</span>
-                <p><span class="money">0.000</span><span>đ</span></p>
-              </div>
-              <div class="total">
-                <span>Tổng tiền:</span>
-                <p><span class="money">0.000</span><span>đ</span></p>
-              </div>
-            </div>
-            </div>
-            <button class="btn btn--radius btn-order">Đặt sách</button>
-          </aside>
+            <aside class="customer-info">
+                <div sec:authorize="isAnonymous()" class="address-box">
+                    <a class="adress-link" href="">Địa chỉ nhận hàng</a>
+                </div>
+                <div sec:authorize="hasRole('CUSTOMER')" class="address-box">
+                    <div class="address-header">
+                        <p class="address-heading">Giao tới</p>
+                        <a href="#" class="change-address__link">Thay đổi</a>
+                    </div>
+                    <div class="info">
+                        <p class="info-name padding-r-md">Bùi Thanh Duy</p>
+                        <p class="info-phone padding-l-md">0383314133</p>
+                    </div>
+                    <address class="info-address">
+                        <span>Nhà</span>
+                        1/2 đường số 7, Phường Bình Thọ, Thành phố Thủ Đức, Hồ Chí Minh
+                    </address>
+                </div>
+                <!-- payment method -->
+                <div class="payment-method">
+                    <h2 class="payment-method-title">Phương thức thanh toán</h2>
+                    <div class="payment-method-options">
+                        <label class="payment-method-option">
+                            <input type="radio" name="paymentMethod" value="creditCard"/>
+                            <span class="payment-method-option-text">Thẻ tín dụng</span>
+                        </label>
+                        <label class="payment-method-option">
+                            <input type="radio" name="paymentMethod" value="paypal"/>
+                            <span class="payment-method-option-text">PayPal</span>
+                        </label>
+                        <label class="payment-method-option">
+                            <input
+                                    checked
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="bankTransfer"
+                            />
+                            <span class="payment-method-option-text">Tiền mặt</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="total-price-section">
+                    <h2 class="price-title">Thanh toán</h2>
+                    <div class="subtotal">
+                        <span>Tạm tính:</span>
+                        <p><span class="money">0.000</span><span>đ</span></p>
+                    </div>
+                    <div class="shipping">
+                        <span>Phí ship:</span>
+                        <p><span class="money">15000</span><span>đ</span></p>
+                    </div>
+                    <div class="discount">
+                        <span>Giảm giá:</span>
+                        <p><span class="money">0.000</span><span>đ</span></p>
+                    </div>
+                    <div class="total">
+                        <span>Tổng tiền:</span>
+                        <p><span class="money">0.000</span><span>đ</span></p>
+                    </div>
+                </div>
+                <button class="btn btn--radius btn-order">Đặt sách</button>
+            </aside>
         </div>
-      </section>
-    </main>
-    <!-- FOOTER -->
-    <footer th:replace="~{common/footer.html :: copy}" >
-    </footer>
+    </section>
+</main>
+<!-- FOOTER -->
+<footer th:replace="~{common/footer.html :: copy}">
+</footer>
 
-    <script defer th:src="@{/scripts/cart.js}"></script>
-    <script defer th:src="@{/scripts/user.js}"></script>
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-    ></script>
-  </body>
+<script defer th:src="@{/scripts/cart.js}"></script>
+<script defer th:src="@{/scripts/user.js}"></script>
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+></script>
+</body>
 </html>

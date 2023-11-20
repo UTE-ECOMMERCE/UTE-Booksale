@@ -1,4 +1,4 @@
-package com.ecommerce.booksale.registration.token;
+package com.ecommerce.booksale.authentication.registration.token;
 
 
 import lombok.AllArgsConstructor;
