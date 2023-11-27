@@ -3,6 +3,7 @@ package com.ecommerce.booksale.authentication.registration;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/register")
 @SessionAttributes("cart")
+@Slf4j
 public class RegistrationController {
 
     private final RegistrationService registrationService;
@@ -36,6 +38,7 @@ public class RegistrationController {
             registrationService.register(registerData, registerData.getConfirmPassword());
         }catch (Exception e){
             // set object name
+            log.error(e.getMessage());
             model.addAttribute("error", e.getMessage());
             return "register";
         }

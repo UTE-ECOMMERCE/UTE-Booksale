@@ -10,12 +10,12 @@ import com.ecommerce.booksale.exception.BookNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @SessionAttributes("cart")
 @Slf4j
+@RequestMapping("/book")
 public class BookController {
 
     private static final String BOOK_NOT_FOUND = "Book not found for id = ";
@@ -33,7 +34,7 @@ public class BookController {
     private final SubCategoryService subCategoryService;
     private final HttpServletRequest request;
 
-    @GetMapping("/book/category/{category}")
+    @GetMapping("/category/{category}")
     public String getBookCategory(@PathVariable("category") String kebabCategoryName,
                                   @RequestParam(value = "sub", required = false) Integer subCategoryId, Model model) {
         // get URI
@@ -62,7 +63,7 @@ public class BookController {
         return "book";
     }
 
-    @GetMapping("/book/{id}")
+    @GetMapping("/{id}")
     public String accessBuyPage(@PathVariable("id") Integer bookId, Model model) {
 
 
@@ -77,6 +78,38 @@ public class BookController {
         model.addAttribute("book", foundBook);
         model.addAttribute("relevantBooks", relevantBooks);
         return "book-sell-page";
+    }
+
+
+    @GetMapping("/search")
+    public String searchBook(@RequestParam(value = "keyword") String keyword,
+                             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+                             @RequestParam(value = "size", defaultValue = "12", required = false) Integer size,
+                             Model model) {
+
+
+        String message = "KẾT QUẢ TÌM KIẾM";
+        if (keyword.isEmpty() || keyword == null) {
+            message = "Vui lòng nhập từ khóa tìm kiếm";
+            model.addAttribute("message", message);
+            return "search-page";
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<BookDTO> books = bookService.searchBook(keyword, pageable);
+        log.info(books.getContent().toString());
+        if (books.getContent().isEmpty()) {
+            message = "Không tìm thấy kết qủa cho: " + keyword;
+            model.addAttribute("message", message);
+            return "search-page";
+        }
+
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("message", message);
+        model.addAttribute("totalPages", books.getTotalPages());
+        model.addAttribute("currentPage", books.getNumber());
+        model.addAttribute("books", books.getContent());
+        return "search-page";
     }
 
 

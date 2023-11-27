@@ -3,14 +3,16 @@ package com.ecommerce.booksale.authentication.registration;
 
 import com.ecommerce.booksale.authentication.registration.token.ConfirmationToken;
 import com.ecommerce.booksale.authentication.registration.token.ConfirmationTokenService;
-import com.ecommerce.booksale.utils.constants.AuthenError;
-import com.ecommerce.booksale.utils.email.EmailSender;
+import com.ecommerce.booksale.exception.Messages;
+import com.ecommerce.booksale.exception.SendMailFailException;
 import com.ecommerce.booksale.user.User;
 import com.ecommerce.booksale.user.UserRepository;
 import com.ecommerce.booksale.user.UserService;
+import com.ecommerce.booksale.utils.constants.AuthenError;
+import com.ecommerce.booksale.utils.email.EmailSender;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,48 +21,58 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class RegistrationService {
 
+    private static final String REGISTRATION_EMAIL = "Registration Confirmation";
     private final UserService userService;
     private final UserRepository userRepository;
     private final EmailSender emailSender;
     private final ConfirmationTokenService confirmationTokenService;
 
-    public void register(RegisterData user, String confirmPassword){
-        if (!checkUserInput(user,confirmPassword)){
+    public void register(RegisterData user, String confirmPassword) {
+        if (!checkUserInput(user, confirmPassword)) {
             throw new IllegalArgumentException(AuthenError.NOT_MATCH_PASSWORD_ERROR);
         }
 
-        if (!isValidEmail(user)){
+        if (!isValidEmail(user)) {
             throw new IllegalStateException(AuthenError.EMAIL_IN_USE);
         }
 
-        // create user and token
-        String token = userService.registerUser(user);
 
-        //TODO: send email;
-        String link = "http://localhost:8080/booksale/register/confirm?token=" + token;
-        emailSender.send(
-                user.getEmail(),
-                buildEmail(link));
+        try{
+            // create user and token
+            String token = userService.registerUser(user);
+
+            String link = "http://localhost:8080/booksale/register/confirm?token=" + token;
+            emailSender.send(
+                    user.getEmail(),
+                    REGISTRATION_EMAIL,
+                    buildEmail(link));
+            log.info("Sent email to " + user.getEmail());
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new SendMailFailException(Messages.SEND_EMAIL_ERROR);
+        }
+
     }
 
     @Transactional
-    public String confirmToken(String token){
+    public String confirmToken(String token) {
         // get token from database
         ConfirmationToken confirmationToken = confirmationTokenService
                 .findToken(token).
                 orElseThrow(() -> new IllegalStateException(AuthenError.TOKEN_NOT_FOUND));
 
         // Check if the token was confirmed
-        if (confirmationToken.getConfirmedAt() != null){
+        if (confirmationToken.getConfirmedAt() != null) {
             throw new IllegalStateException(AuthenError.TOKEN_CONFIRMED);
         }
 
         // get expired time of the token
         LocalDateTime expiredAt = confirmationToken.getExpiredAt();
 
-        if (expiredAt.isBefore(LocalDateTime.now())){
+        if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new IllegalStateException(AuthenError.EXPIRED_TOKEN);
         }
 
@@ -73,17 +85,17 @@ public class RegistrationService {
     }
 
     // this function check if user confirm correct their password
-    public boolean checkUserInput(RegisterData user, String confirmPassword){
-        if (user.getPassword().equals(confirmPassword)){
+    public boolean checkUserInput(RegisterData user, String confirmPassword) {
+        if (user.getPassword().equals(confirmPassword)) {
             return true;
         }
         return false;
     }
 
     // check if the email was exists in db
-    public boolean isValidEmail(RegisterData user){
+    public boolean isValidEmail(RegisterData user) {
         Optional<User> newUser = userRepository.findByEmail(user.getEmail().trim());
-        if (newUser.isPresent()){
+        if (newUser.isPresent()) {
             return false;
         }
         return true;

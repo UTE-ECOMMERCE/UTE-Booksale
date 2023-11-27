@@ -1,6 +1,7 @@
 package com.ecommerce.booksale.user;
 
 
+import com.ecommerce.booksale.exception.Messages;
 import com.ecommerce.booksale.utils.constants.AuthenError;
 import com.ecommerce.booksale.exception.RoleNotFoundException;
 import com.ecommerce.booksale.authentication.registration.RegisterData;
@@ -31,7 +32,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format(AuthenError.USER_NOT_FOUND, email)));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(Messages.USER_NOT_FOUND, email)));
     }
 
     public String registerUser(RegisterData user){

@@ -24,6 +24,12 @@ public class GlobalExceptionHandler {
         return new ModelAndView("empty-book-category");
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ModelAndView handleBadRequestException(BadRequestException ex){
+        return new ModelAndView("redirect:/cart")
+                .addObject("error", ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ModelAndView handleError(Exception ex){
         System.out.println(ex.getLocalizedMessage());

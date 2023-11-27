@@ -13,4 +13,11 @@ public class CartDTO {
     private Double price;
     private String discountPrice;
     private Integer quantity;
+    private Integer availableQuantity;
+    private Boolean status;
+
+
+    public Boolean getStatus(){
+        return this.quantity < this.availableQuantity;
+    }
 }

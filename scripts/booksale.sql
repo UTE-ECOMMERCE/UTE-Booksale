@@ -108,9 +108,9 @@ DROP TABLE IF EXISTS `Users`;
 CREATE TABLE Users (
   user_id bigint PRIMARY KEY auto_increment,
   full_name NVARCHAR(255),
-  email VARCHAR(255) unique not null,
-  password VARCHAR(255) not null,
-  phone VARCHAR(20),
+  email VARCHAR(255) unique,
+  password VARCHAR(255),
+  phone VARCHAR(20) unique,
   enable tinyint,
   is_lock tinyint
 )auto_increment=1;

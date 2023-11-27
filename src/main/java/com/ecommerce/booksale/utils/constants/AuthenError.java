@@ -6,6 +6,4 @@ public interface AuthenError {
    String TOKEN_NOT_FOUND = "Không tìm thấy token";
    String TOKEN_CONFIRMED = "Email này đã được xác nhận";
    String EXPIRED_TOKEN = "Token đã hết hiêụ lực";
-   String USER_NOT_FOUND = "User with email %s not found";
-
 }

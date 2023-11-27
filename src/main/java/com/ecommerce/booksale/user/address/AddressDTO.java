@@ -1,6 +1,7 @@
 package com.ecommerce.booksale.user.address;
 
 import com.ecommerce.booksale.user.UserDTO;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -15,7 +16,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddressDTO {
-
     @NotBlank
     private String province;
 
@@ -31,5 +31,4 @@ public class AddressDTO {
     private String description;
 
     private UserDTO userInformation;
-
 }

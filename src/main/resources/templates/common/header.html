@@ -16,7 +16,7 @@
           >
         </div>
 
-        <form action="#" class="search-form">
+        <form th:action="@{/book/search}" class="search-form" th:method="GET">
           <label for="search-input" class="search-icon"
           ><ion-icon name="search"></ion-icon
           ></label>
@@ -24,9 +24,10 @@
                   type="text"
                   id="search-input"
                   class="margin-right-sm"
+                  name="keyword"
                   placeholder="Tìm kiếm sách..."
           />
-          <button class="btn btn--full btn--search">search</button>
+          <button type="submit" class="btn btn--full btn--search">search</button>
           <button class="btn-close-search">
             <ion-icon name="close-outline" class="icon-close-form"></ion-icon>
           </button>

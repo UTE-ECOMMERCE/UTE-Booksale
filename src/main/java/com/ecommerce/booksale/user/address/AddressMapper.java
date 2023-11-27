@@ -12,5 +12,8 @@ public interface AddressMapper {
     @Mapping(target = "user", source = "userInformation")
     Address addressDTOToAddress(AddressDTO addressDTO);
 
+    @Mapping(target = "userInformation", source = "user")
+    AddressDTO addressToAddressDTO(Address address);
+
     User userDTOToUser(UserDTO user);
 }

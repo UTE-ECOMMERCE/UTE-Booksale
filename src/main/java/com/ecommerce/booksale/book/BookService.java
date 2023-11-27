@@ -11,6 +11,7 @@ import com.ecommerce.booksale.exception.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.ecommerce.booksale.exception.ErrorMessages.BOOK_NOT_FOUND;
+import static com.ecommerce.booksale.exception.Messages.BOOK_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
@@ -29,14 +30,14 @@ public class BookService {
 
     private static final Integer DEFAULT_SIZE = 6;
     private static final Integer DEFAULT_PAGE = 0;
-    private static final String RELEVANT_BOOK_NOT_FOUND = "Relebant book not found";
+    private static final String RELEVANT_BOOK_NOT_FOUND = "Relevant book not found";
     private final BookRepository bookRepository;
     private final CategoryRepository categoryRepository;
     private final SubCategoryRepository subCategoryRepository;
     private final CategoryService categoryService;
     private final SubCategoryService subCategoryService;
 
-    // get All books
+
     public List<Book> findAllBooks() {
         return bookRepository.findAll();
     }
@@ -49,18 +50,31 @@ public class BookService {
         return pageBooks.getContent();
     }
 
+    public Page<BookDTO> searchBook(String keyword, Pageable pageable) {
+        // Use your BookRepository to fetch data based on the keyword and pageable
+        Page<Book> bookEntities = bookRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+
+        // Convert BookEntity objects to BookDTO objects (DTO - Data Transfer Object)
+        List<BookDTO> bookDTOs = bookEntities.getContent()
+                .stream()
+                .map(BookMapper::toDTO) // Replace with your conversion logic
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(bookDTOs, pageable, bookEntities.getTotalElements());
+    }
+
 
     public List<BookDTO> getBookByCategoryIdAndSubCategoryId(Integer categoryId, Integer subCategoryId, int page, int size) {
 
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new CategoryNotFoundException(String.format(ErrorMessages.CATEGORY_NOT_FOUND, categoryId)));
+                .orElseThrow(() -> new CategoryNotFoundException(String.format(Messages.CATEGORY_NOT_FOUND, categoryId)));
         SubCategory subCategory = subCategoryRepository.findById(subCategoryId)
-                .orElseThrow(() -> new SubCategoryNotFoundException(String.format(ErrorMessages.SUBCATEGORY_NOT_FOUND, subCategoryId)));
+                .orElseThrow(() -> new SubCategoryNotFoundException(String.format(Messages.SUBCATEGORY_NOT_FOUND, subCategoryId)));
         Page<Book> foundBooks = this.bookRepository
                 .findBySubcategories(subCategory, PageRequest.of(page, size));
 
         if (foundBooks.getContent().isEmpty() || foundBooks == null) {
-            throw new NotFoundBookByCategoryAndSubCategory(ErrorMessages.BOOK_NOT_FOUND_BY_CATEGORY_AND_SUBCATEGORY);
+            throw new NotFoundBookByCategoryAndSubCategory(Messages.BOOK_NOT_FOUND_BY_CATEGORY_AND_SUBCATEGORY);
         }
 
         List<BookDTO> listBookData = foundBooks.getContent().stream().map(BookMapper::toDTO).collect(Collectors.toList());
@@ -75,12 +89,12 @@ public class BookService {
         Category category = categoryService.getCategoryById(id);
 
         if (category == null) {
-            throw new CategoryNotFoundException(ErrorMessages.CATEGORY_NOT_FOUND);
+            throw new CategoryNotFoundException(Messages.CATEGORY_NOT_FOUND);
         }
 
         Page<Book> books = bookRepository.findByCategories(category, pageable);
         if (!books.hasContent()) {
-            throw new BookNotFoundByCategory(String.format(ErrorMessages.BOOK_NOT_FOUND_BY_CATEGORY, category.getName()));
+            throw new BookNotFoundByCategory(String.format(Messages.BOOK_NOT_FOUND_BY_CATEGORY, category.getName()));
         }
 
         List<BookDTO> bookData = books.stream().map(BookMapper::toDTO).collect(Collectors.toList());
@@ -147,7 +161,7 @@ public class BookService {
 
         Pageable pageable = PageRequest.of(0, 7);
 
-        Page<Book> books ;
+        Page<Book> books;
         List<BookDTO> bookData;
 
         // create list books base on categories

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{ common/head.html :: common_header(~{::title},~{::link}) }">
+    <title>Tìm kiếm</title>
+
+    <link rel="stylesheet" th:href="@{/css/book.css}" >
+
+</head>
+
+<body>
+<!-- HEADER -->
+<header th:insert="~{common/header.html :: copy}"></header>
+<!-- MAIN CONTENT -->
+<main class="category-books-section">
+    <div class="category-page container">
+        <div class="category-books">
+            <h2 class="heading-secondary margin-bottom-super" th:text="${message}">
+            </h2>
+            <!--            Book containers-->
+            <div class="books grid grid-4--columns">
+                <div class="book-card" th:each="book : ${books}">
+                    <a th:href="@{'/book/' + ${book.bookId}}" class="book-link">
+                        <span class="discount-tag" th:text="${book.discount}"></span>
+                        <div class="img-container">
+                            <img th:src="${book.mainImg}" th:alt="${book.title}" class="card-img" />
+                        </div>
+                        <div class="card-body">
+                            <p class="card-title" th:text="${book.title}"></p>
+                            <div class="rating card-rating">
+                                <span class="rating-number">4.8</span>
+                                <span><ion-icon name="star"></ion-icon></span>
+                                <span class="rating-text">Đã bán 200</span>
+                            </div>
+                            <div class="card-prices">
+                                <span class="card-discount" th:text="${book.price}"></span>
+                                <span class="card-price" th:text="${book.finalPrice}"></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+<!--            <div class="pagination">-->
+<!--                <a th:href="@{'/search?keyword=' + ${keyword} + '&page=' + 0}" class="pagination-btn prev">-->
+<!--                    <ion-icon name="chevron-back-outline"></ion-icon>-->
+<!--                </a>-->
+
+<!--                <div class="pages">-->
+<!--                    <div th:each="i : ${#numbers.sequence(0, totalPages - 1)}">-->
+<!--                        <a th:href="@{'/search?keyword=' + ${keyword} + '&page=' + ${i}}"-->
+<!--                           th:classappend="${currentPage == i} ? 'active' : ''"-->
+<!--                           class="pagination-btn" th:text="${i + 1}"></a>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <a th:href="@{'/search?keyword=' + ${keyword} + '&page=' + (totalPages - 1)}" class="pagination-btn next">-->
+<!--                    <ion-icon name="chevron-forward-outline"></ion-icon>-->
+<!--                </a>-->
+<!--            </div>-->
+        </div>
+    </div>
+</main>
+<!-- FOOTER -->
+<footer th:replace="~{common/footer.html :: copy}" >
+</footer>
+<script type="module" defer th:src="@{/scripts/book.js}"></script>
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+></script>
+</body>
+</html>
