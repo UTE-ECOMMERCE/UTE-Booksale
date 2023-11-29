@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class CartRequestData {
     private Integer id;
     private Integer quantity;
+    private Boolean chosen;
 }

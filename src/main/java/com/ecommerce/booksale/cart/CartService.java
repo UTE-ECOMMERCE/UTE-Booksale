@@ -45,6 +45,7 @@ public class CartService {
                 .price(bookData.getPrice())
                 .discountPrice(bookData.getFinalPrice())
                 .availableQuantity(foundBook.getQuantity())
+                .chosen(false)
                 .build();
 
         return cartBook;

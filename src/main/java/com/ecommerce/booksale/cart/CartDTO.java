@@ -15,6 +15,7 @@ public class CartDTO {
     private Integer quantity;
     private Integer availableQuantity;
     private Boolean status;
+    private Boolean chosen;
 
 
     public Boolean getStatus(){

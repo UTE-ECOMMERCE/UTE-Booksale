@@ -1,6 +1,7 @@
 package com.ecommerce.booksale.user;
 
 import com.ecommerce.booksale.user.address.Address;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
@@ -10,8 +11,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+    @NotBlank
     private String email;
+    @NotBlank
     private String fullName;
+    @NotBlank
     private String phone;
 
     public UserDTO(User user){

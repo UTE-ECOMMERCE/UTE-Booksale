@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 
-<div th:fragment="copy" class="modal" id="myModal">
-    <div class="modal-content">
+<div th:fragment="copy" th:if="${showModal}" class="modal" id="myModal" >
+    <div  class="modal-content">
         <span class="close" id="closeModal">&times;</span>
         <h2>Thông báo</h2>
-        <p th:text="${error}"></p>
+        <p th:text="${errorMessage}"></p>
         <button id="modalCloseButton">OK</button>
     </div>
 </div>

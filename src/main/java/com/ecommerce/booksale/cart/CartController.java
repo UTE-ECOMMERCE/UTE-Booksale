@@ -44,8 +44,6 @@ public class CartController {
                             @ModelAttribute("cart") ShoppingCart cart){
         CartDTO newCartItem = cartService.getBookCartItem(requestData.getId(), requestData.getQuantity());
 
-        log.info("newCartItem quantity " + newCartItem.getAvailableQuantity());
-        log.info("newCartItem added quantity " + newCartItem.getQuantity());
         cart.addBook(newCartItem);
         return "redirect:/cart";
     }
@@ -64,6 +62,14 @@ public class CartController {
                                  @ModelAttribute("cart") ShoppingCart cart){
         int bookId = requestData.getId();
         cart.deleteItem(bookId);
-        return "cart";
+        return "redirect:/cart";
+    }
+
+    @PostMapping("/choose-item")
+    public String chooseItemUpdate(@RequestBody CartRequestData  requestData,
+            @ModelAttribute("cart") ShoppingCart cart){
+
+        cart.updateStatusItem(requestData.getId(), requestData.getChosen());
+        return "redirect:/cart";
     }
 }

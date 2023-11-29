@@ -38,7 +38,7 @@
                     <div class="cart-book" th:each="item: ${cart.items}">
                         <form class="cart-book__form">
                             <input type="hidden" class="book-id" th:value="${item.bookId}">
-                            <input type="checkbox" class="checkbox margin-right-md"/>
+                            <input type="checkbox" class="checkbox margin-right-md" th:checked="${item.chosen}" />
                             <div class="img-box margin-right-sm">
                                 <img class="cart-img" th:src="${item.imgUrl}" th:alt="${item.bookTitle}"/>
                             </div>

@@ -1,13 +1,7 @@
 package com.ecommerce.booksale.cart;
 
-import com.ecommerce.booksale.book.Book;
-import com.ecommerce.booksale.book.BookRepository;
-import com.ecommerce.booksale.exception.BadRequestException;
-import com.ecommerce.booksale.exception.BookNotFoundException;
-import com.ecommerce.booksale.exception.Messages;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,9 +35,6 @@ public class ShoppingCart {
         items.stream().filter(item -> item.getBookId() == bookId)
                 .forEach(item ->
                     item.setQuantity(quantity));
-
-        System.out.println(items.get(0).getQuantity() + " " + items.get(0).getAvailableQuantity());
-        System.out.println(items.get(0).getStatus());
     }
 
     public boolean deleteItem(int id){
@@ -60,5 +51,13 @@ public class ShoppingCart {
         return false;
     }
 
+    public void updateStatusItem(int id, boolean chosen){
+        items.stream().filter(item -> item.getBookId() == id)
+                .forEach(item ->
+                        item.setChosen(chosen));
+    }
 
+    public boolean checkCreateOrderValid() {
+        return items.stream().anyMatch(CartDTO::getChosen);
+    }
 }

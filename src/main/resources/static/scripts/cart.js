@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const createOrderBtn = document.querySelector(".btn-order");
   const addressForm = document.querySelector(".address-form_cart");
 
-      console.log(createOrderBtn);
-
     // Initialize total price
       let totalPrice = 0;
       let totalOriginPrice = 0;
@@ -54,9 +52,37 @@ document.addEventListener("DOMContentLoaded", () => {
         dicountPriceElement.textContent = (totalPrice - totalOriginPrice);
       };
 
+      updateStatus = (id, status) => {
+            const data = {
+              id: id,
+              chosen: status,
+            };
+
+            fetch("http://localhost:8080/booksale/cart/choose-item", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            }).then((res) => {
+              console.log(res);
+            });
+
+        };
+
+      const handleChange = (event) => {
+          const checkbox = event.target;
+          const bookId = checkbox.closest('.cart-book__form').querySelector('.book-id').value;
+          const isChecked = checkbox.checked;
+
+          updateStatus(bookId, isChecked);
+          updateTotalPrice();
+      };
+
       // Add change event listeners to checkboxes
       checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener("change", updateTotalPrice);
+
+        checkbox.addEventListener("change", handleChange);
       });
 
 
@@ -75,6 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(res);
     });
   };
+
+
 
   deleteData = (id) => {
     const data = {
@@ -101,7 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
        btnDeleteItems.forEach((btn) => {
          btn.addEventListener("click", (e) => {
              e.preventDefault();
-             console.log("Inside delete function");
              const bookId = getBookId(e.target.parentElement);
              deleteData(bookId);
 
