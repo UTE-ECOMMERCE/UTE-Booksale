@@ -57,13 +57,13 @@ public class OrderController {
         boolean isCreated = orderService.createOrder(userAddress, cart);
         System.out.println("isCreated: " + isCreated);
         if (!isCreated) {
-            model.addAttribute("showModal", true);
             message = "Đặt hàng thất bại";
-            System.out.println(message);
+            model.addAttribute("showModal", true);
+            model.addAttribute("message", message );
             return "redirect:/cart";
         }
 
-        System.out.println("Đặt hàng thành công");
+        model.addAttribute("showModal", true);
         model.addAttribute("message", message );
         return "redirect:/cart";
     }

@@ -203,11 +203,33 @@
     </section>
 </main>
 
-<div th:replace="~{modal/cart-error.html :: copy}"></div>
+
+
 <div th:replace="~{modal/confirm-order.html :: copy}"></div>
+<div th:replace="~{modal/message-modal.html :: copy}"></div>
+
+
+
 <!-- FOOTER -->
 <footer th:replace="~{common/footer.html :: copy}">
 </footer>
+
+<script th:inline="javascript">
+    <script th:inline="javascript">
+      document.addEventListener('DOMContentLoaded', function() {
+          const showModal = /*[(${showModal} ? 'true' : 'false') == 'true' ? 'true' : 'false']*/ 'false';
+
+          console.log("abc");
+          console.log(showModal);
+
+          if (showModal === 'true') {
+              const modal = document.querySelector('.message-modal');
+              modal.style.display = 'block'; // Display the modal
+          }
+      });
+</script>
+</script>
+
 <script defer th:src="@{/scripts/cart.js}"></script>
 <script defer th:src="@{/scripts/user.js}"></script>
 <script defer th:src="@{/scripts/detail.js}"></script>

@@ -9,6 +9,7 @@ import com.ecommerce.booksale.user.UserRepository;
 import com.ecommerce.booksale.user.address.Address;
 import com.ecommerce.booksale.user.address.AddressDTO;
 import com.ecommerce.booksale.user.address.AddressRepository;
+import com.ecommerce.booksale.utils.email.EmailService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,79 +25,84 @@ public class OrderService {
 
     private final UserRepository userRepository;
     private final CartService cartService;
+    private final EmailService mailSender;
 
     private String orderHtmlTemplate(Order order) {
-        return "<!DOCTYPE html>\n" +
-                "<html>\n" +
-                "<head>\n" +
-                "    <title>Order Confirmation</title>\n" +
-                "    <style>\n" +
-                "        body {\n" +
-                "            font-family: Arial, sans-serif;\n" +
-                "            margin: 0;\n" +
-                "            padding: 0;\n" +
-                "        }\n" +
-                "        .container {\n" +
-                "            width: 80%;\n" +
-                "            margin: auto;\n" +
-                "            padding: 20px;\n" +
-                "            border: 1px solid #ccc;\n" +
-                "            border-radius: 5px;\n" +
-                "            background-color: #f9f9f9;\n" +
-                "        }\n" +
-                "        .header {\n" +
-                "            text-align: center;\n" +
-                "        }\n" +
-                "        .order-details {\n" +
-                "            margin-top: 20px;\n" +
-                "        }\n" +
-                "        .order-info {\n" +
-                "            border-collapse: collapse;\n" +
-                "            width: 100%;\n" +
-                "        }\n" +
-                "        .order-info th, .order-info td {\n" +
-                "            border: 1px solid #ddd;\n" +
-                "            padding: 8px;\n" +
-                "            text-align: left;\n" +
-                "        }\n" +
-                "        .order-info th {\n" +
-                "            background-color: #f2f2f2;\n" +
-                "        }\n" +
-                "    </style>\n" +
-                "</head>\n" +
-                "<body>\n" +
-                "    <div class=\"container\">\n" +
-                "        <div class=\"header\">\n" +
-                "            <h2>Order Confirmation</h2>\n" +
-                "        </div>\n" +
-                "        <div class=\"order-details\">\n" +
-                "            <p>Dear [Customer Name],</p>\n" +
-                "            <p>Your order has been successfully placed. Below are the details:</p>\n" +
-                "            <table class=\"order-info\">\n" +
-                "                <thead>\n" +
-                "                    <tr>\n" +
-                "                        <th>Product</th>\n" +
-                "                        <th>Quantity</th>\n" +
-                "                        <th>Price</th>\n" +
-                "                    </tr>\n" +
-                "                </thead>\n" +
-                "                <tbody>\n" +
-                "                    <!-- Iterate through order items -->\n" +
-                "                    {{#each orderItems}}\n" +
-                "                    <tr>\n" +
-                "                        <td>{{this.productName}}</td>\n" +
-                "                        <td>{{this.quantity}}</td>\n" +
-                "                        <td>{{this.price}}</td>\n" +
-                "                    </tr>\n" +
-                "                    {{/each}}\n" +
-                "                </tbody>\n" +
-                "            </table>\n" +
-                "            <p>Total amount: ${{totalAmount}}</p>\n" +
-                "            <p>Thank you for shopping with us!</p>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "</body>\n" +
-                "</html>";
+        StringBuilder htmlContent = new StringBuilder();
+        htmlContent.append("<!DOCTYPE html>\n");
+        htmlContent.append("<html>\n");
+        htmlContent.append("<head>\n");
+        htmlContent.append("    <title>Order Confirmation</title>\n");
+        htmlContent.append("    <style>\n");
+        htmlContent.append("        body {\n");
+        htmlContent.append("            font-family: Arial, sans-serif;\n");
+        htmlContent.append("            margin: 0;\n");
+        htmlContent.append("            padding: 0;\n");
+        htmlContent.append("        }\n");
+        htmlContent.append("        .container {\n");
+        htmlContent.append("            width: 80%;\n");
+        htmlContent.append("            margin: auto;\n");
+        htmlContent.append("            padding: 20px;\n");
+        htmlContent.append("            border: 1px solid #ccc;\n");
+        htmlContent.append("            border-radius: 5px;\n");
+        htmlContent.append("            background-color: #f9f9f9;\n");
+        htmlContent.append("        }\n");
+        htmlContent.append("        .header {\n");
+        htmlContent.append("            text-align: center;\n");
+        htmlContent.append("        }\n");
+        htmlContent.append("        .order-details {\n");
+        htmlContent.append("            margin-top: 20px;\n");
+        htmlContent.append("        }\n");
+        htmlContent.append("        .order-info {\n");
+        htmlContent.append("            border-collapse: collapse;\n");
+        htmlContent.append("            width: 100%;\n");
+        htmlContent.append("        }\n");
+        htmlContent.append("        .order-info th, .order-info td {\n");
+        htmlContent.append("            border: 1px solid #ddd;\n");
+        htmlContent.append("            padding: 8px;\n");
+        htmlContent.append("            text-align: left;\n");
+        htmlContent.append("        }\n");
+        htmlContent.append("        .order-info th {\n");
+        htmlContent.append("            background-color: #f2f2f2;\n");
+        htmlContent.append("        }\n");
+        htmlContent.append("    </style>\n");
+        htmlContent.append("</head>\n");
+        htmlContent.append("<body>\n");
+        htmlContent.append("    <div class=\"container\">\n");
+        htmlContent.append("        <div class=\"header\">\n");
+        htmlContent.append("            <h2>Order Confirmation</h2>\n");
+        htmlContent.append("        </div>\n");
+        htmlContent.append("        <div class=\"order-details\">\n");
+        htmlContent.append("            <p>Dear ").append(order.getUser().getFullName()).append(",</p>\n");
+        htmlContent.append("            <p>Your order has been successfully placed. Below are the details:</p>\n");
+        htmlContent.append("            <table class=\"order-info\">\n");
+        htmlContent.append("                <thead>\n");
+        htmlContent.append("                    <tr>\n");
+        htmlContent.append("                        <th>Product</th>\n");
+        htmlContent.append("                        <th>Quantity</th>\n");
+        htmlContent.append("                        <th>Price</th>\n");
+        htmlContent.append("                    </tr>\n");
+        htmlContent.append("                </thead>\n");
+        htmlContent.append("                <tbody>\n");
+
+        for (OrderItem item : order.getOrderItems()) {
+            htmlContent.append("                    <tr>\n");
+            htmlContent.append("                        <td>").append(item.getBook().getTitle()).append("</td>\n");
+            htmlContent.append("                        <td>").append(item.getQuantity()).append("</td>\n");
+            htmlContent.append("                        <td>").append(item.getTotalPrice()).append("</td>\n");
+            htmlContent.append("                    </tr>\n");
+        }
+
+        htmlContent.append("                </tbody>\n");
+        htmlContent.append("            </table>\n");
+        htmlContent.append("            <p>Total amount: $").append(order.getTotalPrice()).append("</p>\n");
+        htmlContent.append("            <p>Thank you for shopping with us!</p>\n");
+        htmlContent.append("        </div>\n");
+        htmlContent.append("    </div>\n");
+        htmlContent.append("</body>\n");
+        htmlContent.append("</html>");
+
+        return htmlContent.toString();
     }
 
 
@@ -133,6 +139,12 @@ public class OrderService {
                 newUser.addAddress(newAddress);
                 userRepository.save(newUser);
 
+
+                mailSender.send(
+                        foundUser.getEmail(),
+                        "Order Confirmation",
+                        orderHtmlTemplate(newOrder));
+
                 log.info("New user created: {}", newUser.getEmail());
             } else {
                 Order newOrder = Order.builder()
@@ -147,8 +159,15 @@ public class OrderService {
                 foundUser.addOrders(newOrder);
                 userRepository.save(foundUser);
 
+                mailSender.send(
+                        foundUser.getEmail(),
+                        "Order Confirmation",
+                        orderHtmlTemplate(newOrder));
+
                 log.info("Order placed for existing user: {}", foundUser.getEmail());
             }
+
+
 
             return true;
         } catch (Exception e) {
