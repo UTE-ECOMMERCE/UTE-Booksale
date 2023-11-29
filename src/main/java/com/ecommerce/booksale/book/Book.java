@@ -9,6 +9,8 @@ import com.ecommerce.booksale.book.subcategory.SubCategory;
 import com.ecommerce.booksale.order.Order;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,10 +18,11 @@ import java.util.List;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Books")
 public class Book {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="book_id")

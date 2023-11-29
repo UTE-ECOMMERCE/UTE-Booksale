@@ -2,15 +2,22 @@ package com.ecommerce.booksale.order;
 
 
 import com.ecommerce.booksale.book.Book;
+import com.ecommerce.booksale.order.orderItem.OrderItem;
 import com.ecommerce.booksale.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name="orders")
 public class Order {
     @Id
@@ -27,12 +34,8 @@ public class Order {
     @Column(name="status")
     private Boolean status;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name="order_items",
-            joinColumns = @JoinColumn(name="order_id"),
-            inverseJoinColumns = @JoinColumn(name="book_id"))
-    private List<Book> books;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH})

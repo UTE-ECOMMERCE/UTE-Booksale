@@ -1,6 +1,7 @@
 package com.ecommerce.booksale.order;
 
 
+import com.ecommerce.booksale.book.BookRepository;
 import com.ecommerce.booksale.cart.ShoppingCart;
 import com.ecommerce.booksale.user.address.AddressDTO;
 import jakarta.validation.Valid;
@@ -33,26 +34,37 @@ public class OrderController {
                               BindingResult result,
                               @ModelAttribute("cart") ShoppingCart cart,
                                Model model){
+        System.out.println("Inside this function");
+
+
+        log.info("User address: {}", userAddress.getUserInformation().getEmail());
 
         String errorMessage;
+        String message = "Đặt hàng thành công";
         if (result.hasErrors()) {
             // There are validation errors, handle them
             // Get the first field error message
+            log.info("Error: {}", result.getFieldErrors().get(0).toString());
             errorMessage = result.getFieldErrors().get(0).toString();
             // Add the first error message to the model
+            System.out.println(errorMessage);
             model.addAttribute("showModal", true);
             model.addAttribute("errorMessage", errorMessage);
             return "cart";
         }
 
-        if (cart.checkCreateOrderValid()){
-            errorMessage= "Bạn chưa chọn mua sản phẩm nào";
+
+        boolean isCreated = orderService.createOrder(userAddress, cart);
+        System.out.println("isCreated: " + isCreated);
+        if (!isCreated) {
             model.addAttribute("showModal", true);
-            model.addAttribute("errorMessage", errorMessage);
+            message = "Đặt hàng thất bại";
+            System.out.println(message);
             return "redirect:/cart";
         }
 
-        log.info("User address: {}", userAddress.getUserInformation().getEmail());
-        return "cart";
+        System.out.println("Đặt hàng thành công");
+        model.addAttribute("message", message );
+        return "redirect:/cart";
     }
 }

@@ -9,6 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const shippingFeeElement = document.querySelector(".shipping .money");
   const createOrderBtn = document.querySelector(".btn-order");
   const addressForm = document.querySelector(".address-form_cart");
+  const confirmOrderModal = document.querySelector(".confirm-modal");
+  const smallCloseModal = document.querySelector(".close");
+  const btnConfirmOrder = document.querySelector(".btn-confirm");
+
+
 
     // Initialize total price
       let totalPrice = 0;
@@ -17,10 +22,29 @@ document.addEventListener("DOMContentLoaded", () => {
       let shippingFee = parseFloat(shippingFeeElement.textContent);
 
       createOrderBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-        console.log("Inside create order function");
+         e.preventDefault();
+         confirmOrderModal.style.display = "block";
+      });
+
+       // Close the modal when the OK button is clicked
+        smallCloseModal.addEventListener("click", () => {
+          confirmOrderModal.style.display = "none";
+        });
+
+        btnConfirmOrder.addEventListener("click", (event) => {
+          event.preventDefault();
           addressForm.submit();
         });
+
+
+      window.addEventListener("click", (event) => {
+          if (event.target === confirmOrderModal) {
+            confirmOrderModal.style.display = "none";
+          }
+       });
+
+
+
 
       // Function to update the total price based on the checkbox state
       const updateTotalPrice = () => {
@@ -51,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
         originPriceElement.textContent = totalOriginPrice;
         dicountPriceElement.textContent = (totalPrice - totalOriginPrice);
       };
+
 
       updateStatus = (id, status) => {
             const data = {

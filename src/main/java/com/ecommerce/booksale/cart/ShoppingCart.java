@@ -1,7 +1,11 @@
 package com.ecommerce.booksale.cart;
 
+import com.ecommerce.booksale.book.Book;
+import com.ecommerce.booksale.book.BookRepository;
+import com.ecommerce.booksale.order.orderItem.OrderItem;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,11 +16,12 @@ import java.util.List;
 @Slf4j
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Service
 public class ShoppingCart {
     private List<CartDTO> items = new ArrayList<>();
+    private BookRepository bookRepository;
 
     public void addBook(CartDTO newItem) {
         boolean isDuplicate = items.stream()
@@ -60,4 +65,14 @@ public class ShoppingCart {
     public boolean checkCreateOrderValid() {
         return items.stream().anyMatch(CartDTO::getChosen);
     }
+
+
+    public Double getTotalPrice() {
+        return items.stream()
+                .filter(CartDTO::getChosen)
+                .mapToDouble(item -> item.getQuantity() * item.getPrice())
+                .sum();
+    }
+
+
 }
