@@ -256,7 +256,7 @@ const fetchUserData = async () => {
 
       // Iterate through the options and set the selected attribute for the matching option in provinces
       for (let i = 0; i < provinceSelect.options.length; i++) {
-        if (provinceSelect.options[i].textContent.trim() === responseData.data.address.province) {
+        if (provinceSelect.options[i].value === responseData.data.address.province) {
           provinceSelect.options[i].selected = true;
           const code = provinceSelect.options[i].value;
 
@@ -269,7 +269,7 @@ const fetchUserData = async () => {
 
       // Set selected option for district
       for (let i = 0; i < districtSelect.options.length; i++) {
-        if (districtSelect.options[i].textContent === responseData.data.address.district) {
+        if (districtSelect.options[i].value === responseData.data.address.district) {
           districtSelect.options[i].selected = true;
           const code = districtSelect.options[i].value;
           const apiUrl = `https://provinces.open-api.vn/api/d/${code}?depth=2`;
@@ -280,7 +280,7 @@ const fetchUserData = async () => {
 
       // Set selected option for ward
       for (let i = 0; i < wardSelect.options.length; i++) {
-        if (wardSelect.options[i].textContent === responseData.data.address.ward) {
+        if (wardSelect.options[i].value === responseData.data.address.ward) {
           wardSelect.options[i].selected = true;
           break;
         }

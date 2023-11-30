@@ -829,26 +829,18 @@ INSERT INTO Roles (role_id, role_name) VALUES (2, 'ROLE_MANAGER');
 INSERT INTO Roles (role_id, role_name) VALUES (3, 'ROLE_ADMIN');
 
 -- INSERT USERS password=test123
-INSERT INTO Users (full_name, email, password, phone, enable, is_lock)
-VALUES('Bùi Thanh Duy', 'dtb1742002@gmail.com', '$2a$12$aVNMqqYZnOStzUTPO9f.JOgUWXTrzmgZy9v0UoTuSHq2pZL.3QIFC', '0383314133', 1, 0 ); 
+-- INSERT INTO Users (full_name, email, password, phone, enable, is_lock)
+-- VALUES('Bùi Thanh Duy', 'dtb1742002@gmail.com', '$2a$12$aVNMqqYZnOStzUTPO9f.JOgUWXTrzmgZy9v0UoTuSHq2pZL.3QIFC', '0383314133', 1, 0 ); 
 
--- INSERT user_role
-INSERT INTO `User_Role`(user_id, role_id)
-VALUE(1, 1),
-	(1,2);
+-- -- INSERT user_role
+-- INSERT INTO `User_Role`(user_id, role_id)
+-- VALUE(1, 1),
+-- 	(1,2);
 
--- INSERT ADDRESS
-INSERT INTO address (province, district, ward, street, type, description, user_id)
-VALUES
-('Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Cống Vị', 'Đường Kim Mã', 'Nhà riêng', 'Địa chỉ số 1', 1),
-
-
-
-
-
-
-
-
+-- -- INSERT ADDRESS
+-- INSERT INTO address (province, district, ward, street, type, description, user_id)
+-- VALUES
+-- ('Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Cống Vị', 'Đường Kim Mã', 'Nhà riêng', 'Địa chỉ số 1', 1);
 
 
 

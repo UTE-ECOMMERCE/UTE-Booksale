@@ -41,4 +41,15 @@ public class Order {
             CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="user_id")
     private User user;
+
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", orderDate=" + orderDate +
+                ", totalPrice=" + totalPrice +
+                // Include other fields as needed
+                '}';
+    }
 }

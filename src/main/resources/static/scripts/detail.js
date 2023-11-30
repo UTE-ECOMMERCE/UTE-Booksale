@@ -14,6 +14,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeModal = document.querySelector(".close");
   const modalCloseButton = document.querySelector("#modalCloseButton");
   const bookId = document.querySelector(".hidden-book-id").value;
+  const errorMessage = document.querySelector('.error-message');
+
+
+   const availableQuantity = parseInt(document.querySelector('.available-quantity').value, 10);
+
+    // Update button visibility and show error message based on quantity
+       function updateButtonAndMessage() {
+           const selectedQuantity = parseInt(quantityBox.value, 10);
+           const quantityExceedsAvailable = selectedQuantity > availableQuantity;
+
+           btnBuyNow.disabled = quantityExceedsAvailable;
+           btnAddToCart.disabled = quantityExceedsAvailable;
+           btnIncrease.disabled = quantityExceedsAvailable;
+           errorMessage.style.display = quantityExceedsAvailable ? 'block' : 'none';
+       }
+
+       // Check on page load
+       updateButtonAndMessage();
+
+       // Check when quantity changes
+       quantityBox.addEventListener('change', function() {
+           updateButtonAndMessage();
+       });
+
   // decrease quantity of selected book
   btnDecrease.addEventListener("click", (event) => {
     event.preventDefault();
@@ -23,7 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     quantityBox.value = "" + currentQuantity;
     btnDecrease.blur();
+     updateButtonAndMessage();
   });
+
   // increase quantity of selected book
   btnIncrease.addEventListener("click", (event) => {
     event.preventDefault();
@@ -31,7 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
     currentQuantity++;
     quantityBox.value = "" + currentQuantity;
     btnIncrease.blur();
+    updateButtonAndMessage();
+
   });
+
+
   // show more or show less
   showMore.addEventListener("click", () => {
     bookDescriptionBox.classList.toggle("show-more");

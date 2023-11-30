@@ -79,7 +79,7 @@ public class User implements UserDetails {
 
 
     public void addAddress(Address newAddress){
-        if (addresses != null){
+        if (addresses == null){
             addresses = new ArrayList<>();
         }
         newAddress.setUser(this);
@@ -87,7 +87,7 @@ public class User implements UserDetails {
     }
 
     public void addOrders(Order newOrder){
-        if (orders != null){
+        if (orders == null){
             orders = new ArrayList<>();
         }
         newOrder.setUser(this);
