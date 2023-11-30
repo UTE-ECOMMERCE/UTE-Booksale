@@ -52,7 +52,7 @@
                                 <input type="number" min="1" th:value="${item.quantity}"/>
                                 <input type="number" class="available-quantity" th:value="${item.availableQuantity}" hidden/>
                                 <button  class="btn-increase" >+</button>
-<!--                                <button th:if="${item.status == false}" class="btn-increase" disabled>+</button>-->
+                                <p class="error-message cart-error">Vượt quá số lượng có sẳn</p>
                             </div>
                             <button type="submit" class="btn-detele-item">
                                 <ion-icon class="delete-icon" name="trash-outline"></ion-icon>

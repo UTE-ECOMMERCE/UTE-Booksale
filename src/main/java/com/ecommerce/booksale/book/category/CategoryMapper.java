@@ -50,9 +50,6 @@ public class CategoryMapper {
             case "giam-gia":
                 theId = 10;
                 break;
-            case "ban-chay":
-                theId = 11;
-                break;
         }
 
         return theId;

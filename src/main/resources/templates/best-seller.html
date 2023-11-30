@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{ common/head.html :: common_header(~{::title},~{::link}) }">
+  <title >Bán chạy</title>
+
+  <link rel="stylesheet" th:href="@{/css/book.css}" >
+
+</head>
+
+<body>
+<!-- HEADER -->
+<header th:insert="~{common/header.html :: copy}"></header>
+<!-- MAIN CONTENT -->
+<main class="category-books-section">
+  <div class="category-page container grid grid-category">
+    <nav class="sidebar">
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu-item">
+          <a th:href="@{/}" class="sidebar-menu-link"
+          ><ion-icon class="start-icon" name="home-sharp"></ion-icon
+          ><span>Trang chủ</span></a
+          >
+        </li>
+        <!-- dynamic part -->
+        <li class="sidebar-menu-item category-item">
+          <a class="sidebar-menu-link">
+            <ion-icon class="start-icon" name="grid-sharp"></ion-icon
+            ><span>Danh mục</span>
+            <span class="end-icon">
+                  <ion-icon name="chevron-forward-sharp"></ion-icon>
+                  <ion-icon name="chevron-down-sharp"></ion-icon>
+                </span>
+          </a>
+        </li>
+        <!-- fix part -->
+        <li class="sidebar-menu-item">
+          <a href="#" class="sidebar-menu-link"
+          ><ion-icon class="start-icon" name="call-sharp"></ion-icon
+          ><span>Liên hệ chúng tôi</span></a
+          >
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="#" class="sidebar-menu-link"
+          ><ion-icon class="start-icon" name="people-sharp"></ion-icon
+          ><span>Về chúng tôi</span></a
+          >
+        </li>
+      </ul>
+    </nav>
+    <div class="category-books">
+      <h2 class="heading-secondary margin-bottom-super"
+          Sách bán chạy
+      </h2>
+      <!--            Book containers-->
+      <div class="books grid grid-4--columns">
+        <div class="book-card" th:each="book : ${books}">
+          <a th:href="@{'/book/' + ${book.bookId}}" class="book-link">
+            <span class="discount-tag" th:text="${book.discount}"></span>
+            <div class="img-container">
+              <img th:src="${book.mainImg}" th:alt="${book.title}" class="card-img" />
+            </div>
+            <div class="card-body">
+              <p class="card-title" th:text="${book.title}"></p>
+              <div class="rating card-rating">
+                <span class="rating-number">4.8</span>
+                <span><ion-icon name="star"></ion-icon></span>
+                <span class="rating-text">Đã bán 200</span>
+              </div>
+              <div class="card-prices">
+                <span class="card-discount" th:text="${book.price}"></span>
+                <span class="card-price" th:text="${book.finalPrice}"></span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <button class="pagination-btn prev" th:path="${path}">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </button>
+
+        <div class="pages">
+          <a  class="pagination-btn active">1</a>
+          <a  class="pagination-btn">2</a>
+          <a  class="pagination-btn">3</a>
+          <a  class="pagination-btn">4</a>
+          <a  class="pagination-btn">...</a>
+        </div>
+
+        <button class="pagination-btn next" th:path="${path}">
+          <ion-icon name="chevron-forward-outline" ></ion-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+<!-- FOOTER -->
+<footer th:replace="~{common/footer.html :: copy}" >
+</footer>
+<script type="module" defer th:src="@{/scripts/book.js}"></script>
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+></script>
+</body>
+</html>

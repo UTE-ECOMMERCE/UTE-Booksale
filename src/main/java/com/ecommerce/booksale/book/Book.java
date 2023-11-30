@@ -58,6 +58,9 @@ public class Book {
     @Column(name="is_active")
     private boolean isActive;
 
+    @Column(name="sold_quantity")
+    private Integer soldQuantity;
+
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name="author_id")

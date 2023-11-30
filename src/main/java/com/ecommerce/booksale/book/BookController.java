@@ -34,6 +34,27 @@ public class BookController {
     private final SubCategoryService subCategoryService;
     private final HttpServletRequest request;
 
+
+    @GetMapping("/best-seller")
+    public String getBestSeller(Model model) {
+        // get URI
+        String requestURI = request.getRequestURI();
+        // retrieve data from database
+        // get list book
+        System.out.println("In best seller");
+
+        List<BookDTO> books;
+
+        books = bookService.getBestSeller(DEFAULT_PAGE, PAGE_SIZE);
+
+        model.addAttribute("path", "best-seller");
+        model.addAttribute("requestURI", requestURI);
+        model.addAttribute("books", books);
+
+        // return view
+        return "best-seller";
+    }
+
     @GetMapping("/category/{category}")
     public String getBookCategory(@PathVariable("category") String kebabCategoryName,
                                   @RequestParam(value = "sub", required = false) Integer subCategoryId, Model model) {

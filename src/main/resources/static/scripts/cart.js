@@ -41,13 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
           addressForm.submit();
         });
 
-
       window.addEventListener("click", (event) => {
           if (event.target === confirmOrderModal) {
             confirmOrderModal.style.display = "none";
           }
        });
-
 
       // Function to update the total price based on the checkbox state
       const updateTotalPrice = () => {
@@ -168,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
      // Event delegation for handling button clicks
      document.addEventListener("click", (e) => {
          const btn = e.target;
+         const messageEl = e.target.parentElement.querySelector(".error-message");
 
          if (btn.classList.contains("btn-decrease")) {
              e.preventDefault();
@@ -180,6 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
              const increaseButton = btn.parentElement.querySelector('.btn-increase');
              if (currentValue < availableQuantityValue) {
                  increaseButton.disabled = false;
+                 messageEl.style.display = 'none';
              }
 
              if (currentValue > 1) {
@@ -201,6 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
              if (currentValue == availableQuantityValue - 1) {
                  btn.disabled = true;
+                 messageEl.style.display = 'block';
              }
 
              input.value = currentValue + 1;

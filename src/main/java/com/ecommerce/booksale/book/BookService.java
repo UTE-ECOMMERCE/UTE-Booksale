@@ -205,5 +205,10 @@ public class BookService {
     }
 
 
-
+    public List<BookDTO> getBestSeller(Integer defaultPage, Integer pageSize) {
+        Pageable pageable = PageRequest.of(defaultPage, pageSize);
+        Page<Book> books = bookRepository.findTopBestSellersByOrderBySoldQuantityDesc(pageable);
+        List<BookDTO> bookData = books.getContent().stream().map(BookMapper::toDTO).collect(Collectors.toList());
+        return bookData;
+    }
 }
