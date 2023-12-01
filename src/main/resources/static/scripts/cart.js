@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const smallCloseModal = document.querySelector(".close");
   const btnConfirmOrder = document.querySelector(".btn-confirm");
   const btnOk = document.querySelector(".btn-ok");
+  const messageModal = document.querySelector(".message-modal");
 
     // Initialize total price
       let totalPrice = 0;
@@ -24,12 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
          e.preventDefault();
          confirmOrderModal.style.display = "block";
       });
-
-//      btnOk.addEventListener("click", (e) => {
-//         e.preventDefault();
-//         confirmOrderModal.style.display = "none";
-//      });
-
 
        // Close the modal when the OK button is clicked
         smallCloseModal.addEventListener("click", () => {
@@ -144,6 +139,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }).then((res) => {
           console.log(res);
         });
+  }
+
+  hideModal = () => {
+    messageModal.style.display = "none";
   }
 
  // Function to get the book ID

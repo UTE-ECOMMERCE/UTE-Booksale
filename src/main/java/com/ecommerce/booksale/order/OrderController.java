@@ -34,10 +34,6 @@ public class OrderController {
                               BindingResult result,
                               @ModelAttribute("cart") ShoppingCart cart,
                                Model model){
-        System.out.println("Inside this function");
-
-
-        log.info("User address: {}", userAddress.getUserInformation().getEmail());
 
         String errorMessage;
         String message = "Đặt hàng thành công";
@@ -49,7 +45,15 @@ public class OrderController {
             // Add the first error message to the model
             System.out.println(errorMessage);
             model.addAttribute("showModal", true);
-            model.addAttribute("errorMessage", errorMessage);
+            model.addAttribute("message", message);
+            return "redirect:/cart";
+        }
+
+        if (!cart.checkCreateOrderValid()){
+            message = "Đặt hàng thất bại. Giỏ hàng trống";
+            System.out.println(message);
+            model.addAttribute("showModal", true);
+            model.addAttribute("message", message );
             return "cart";
         }
 

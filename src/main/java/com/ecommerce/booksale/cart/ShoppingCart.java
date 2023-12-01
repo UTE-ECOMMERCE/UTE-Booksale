@@ -63,7 +63,11 @@ public class ShoppingCart {
     }
 
     public boolean checkCreateOrderValid() {
-        return items.stream().anyMatch(CartDTO::getChosen);
+        if (items.isEmpty()) {
+            return false;
+        }
+
+        return true;
     }
 
 
