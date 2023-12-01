@@ -442,3 +442,11 @@
 #showModalButton:hover {
   background-color: #004d4c;
 }
+
+.error-message{
+  display: none;
+  color: red;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+ }

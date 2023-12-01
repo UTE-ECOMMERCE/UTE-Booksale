@@ -41,13 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
           addressForm.submit();
         });
 
-
       window.addEventListener("click", (event) => {
           if (event.target === confirmOrderModal) {
             confirmOrderModal.style.display = "none";
           }
        });
-
 
       // Function to update the total price based on the checkbox state
       const updateTotalPrice = () => {
@@ -168,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
      // Event delegation for handling button clicks
      document.addEventListener("click", (e) => {
          const btn = e.target;
+         const messageEl = e.target.parentElement.querySelector(".error-message");
 
          if (btn.classList.contains("btn-decrease")) {
              e.preventDefault();
@@ -180,6 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
              const increaseButton = btn.parentElement.querySelector('.btn-increase');
              if (currentValue < availableQuantityValue) {
                  increaseButton.disabled = false;
+                 messageEl.style.display = 'none';
              }
 
              if (currentValue > 1) {
@@ -201,6 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
              if (currentValue == availableQuantityValue - 1) {
                  btn.disabled = true;
+                 messageEl.style.display = 'block';
              }
 
              input.value = currentValue + 1;
@@ -256,7 +257,7 @@ const fetchUserData = async () => {
 
       // Iterate through the options and set the selected attribute for the matching option in provinces
       for (let i = 0; i < provinceSelect.options.length; i++) {
-        if (provinceSelect.options[i].textContent.trim() === responseData.data.address.province) {
+        if (provinceSelect.options[i].value === responseData.data.address.province) {
           provinceSelect.options[i].selected = true;
           const code = provinceSelect.options[i].value;
 
@@ -269,7 +270,7 @@ const fetchUserData = async () => {
 
       // Set selected option for district
       for (let i = 0; i < districtSelect.options.length; i++) {
-        if (districtSelect.options[i].textContent === responseData.data.address.district) {
+        if (districtSelect.options[i].value === responseData.data.address.district) {
           districtSelect.options[i].selected = true;
           const code = districtSelect.options[i].value;
           const apiUrl = `https://provinces.open-api.vn/api/d/${code}?depth=2`;
@@ -280,7 +281,7 @@ const fetchUserData = async () => {
 
       // Set selected option for ward
       for (let i = 0; i < wardSelect.options.length; i++) {
-        if (wardSelect.options[i].textContent === responseData.data.address.ward) {
+        if (wardSelect.options[i].value === responseData.data.address.ward) {
           wardSelect.options[i].selected = true;
           break;
         }

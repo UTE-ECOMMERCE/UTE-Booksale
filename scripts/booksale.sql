@@ -58,6 +58,7 @@ CREATE TABLE Books (
   total_pages int,
   subcategory_id int,
   is_active tinyint,
+  is_new tinyint default 0,
   
    constraint `FK_books_authors` FOREIGN KEY(`author_id`) References Authors(`author_id`),
    constraint `FK_books_category` FOREIGN KEY(`category_id`) References Categories(`category_id`),
@@ -829,26 +830,18 @@ INSERT INTO Roles (role_id, role_name) VALUES (2, 'ROLE_MANAGER');
 INSERT INTO Roles (role_id, role_name) VALUES (3, 'ROLE_ADMIN');
 
 -- INSERT USERS password=test123
-INSERT INTO Users (full_name, email, password, phone, enable, is_lock)
-VALUES('Bùi Thanh Duy', 'dtb1742002@gmail.com', '$2a$12$aVNMqqYZnOStzUTPO9f.JOgUWXTrzmgZy9v0UoTuSHq2pZL.3QIFC', '0383314133', 1, 0 ); 
+-- INSERT INTO Users (full_name, email, password, phone, enable, is_lock)
+-- VALUES('Bùi Thanh Duy', 'dtb1742002@gmail.com', '$2a$12$aVNMqqYZnOStzUTPO9f.JOgUWXTrzmgZy9v0UoTuSHq2pZL.3QIFC', '0383314133', 1, 0 ); 
 
--- INSERT user_role
-INSERT INTO `User_Role`(user_id, role_id)
-VALUE(1, 1),
-	(1,2);
+-- -- INSERT user_role
+-- INSERT INTO `User_Role`(user_id, role_id)
+-- VALUE(1, 1),
+-- 	(1,2);
 
--- INSERT ADDRESS
-INSERT INTO address (province, district, ward, street, type, description, user_id)
-VALUES
-('Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Cống Vị', 'Đường Kim Mã', 'Nhà riêng', 'Địa chỉ số 1', 1),
-
-
-
-
-
-
-
-
+-- -- INSERT ADDRESS
+-- INSERT INTO address (province, district, ward, street, type, description, user_id)
+-- VALUES
+-- ('Thành phố Hà Nội', 'Quận Ba Đình', 'Phường Cống Vị', 'Đường Kim Mã', 'Nhà riêng', 'Địa chỉ số 1', 1);
 
 
 
@@ -894,6 +887,14 @@ Call InsertBookSubCategories(160, 178, 13); -- insert sách tâm lý
 Call InsertBookCategories(1, 119, 1); -- insert sách tiểu thuyết - văn học
 Call InsertBookCategories(161, 178, 6); -- insert sách kỹ năng
 Call InsertBookCategories(12, 159, 7); -- insert sách thiếu nhi
+
+
+Call InsertBookCategories(7, 27, 8);
+
+
+UPDATE books
+SET is_new = 1
+WHERE book_id BETWEEN 7 AND 27;
 
 
 

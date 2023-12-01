@@ -139,6 +139,7 @@
     </div>
     <form class="buy-form" th:action="@{/cart/add-to-cart}" th:method="post">
       <input type="hidden" class="hidden-book-id" th:name="bookId" th:value="${book.bookId}"/>
+      <input type="number" class="available-quantity" th:value="${book.quantity}" hidden/>
       <div class="detail-address margin-bottom-lg">
         <p class="shipped-address">
           Giao đến: <span>An Ninh Tây, Tuy An, Phú Yên</span>
@@ -151,6 +152,8 @@
         <input type="number" min="1" value="1" th:name="quantity" />
         <button class="btn-increase">+</button>
       </div>
+      <p class="error-message">Vượt quá số lượng có sẳn</p>
+
       <button class="btn btn-buy">Mua ngay</button>
       <button class="btn btn-add-to-cart">Thêm vào giỏ</button>
     </form>

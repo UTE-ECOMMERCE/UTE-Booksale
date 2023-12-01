@@ -8,7 +8,6 @@ import com.ecommerce.booksale.user.User;
 import com.ecommerce.booksale.user.UserRepository;
 import com.ecommerce.booksale.user.address.Address;
 import com.ecommerce.booksale.user.address.AddressDTO;
-import com.ecommerce.booksale.user.address.AddressRepository;
 import com.ecommerce.booksale.utils.email.EmailService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -140,10 +140,13 @@ public class OrderService {
                 userRepository.save(newUser);
 
 
-                mailSender.send(
-                        foundUser.getEmail(),
-                        "Order Confirmation",
-                        orderHtmlTemplate(newOrder));
+                // Tạo CompletableFuture cho việc gửi email bất đồng bộ
+                CompletableFuture.runAsync(() -> {
+                    mailSender.send(
+                            newUser.getEmail(),
+                            "Order Confirmation",
+                            orderHtmlTemplate(newOrder));
+                });
 
                 log.info("New user created: {}", newUser.getEmail());
             } else {
@@ -159,15 +162,15 @@ public class OrderService {
                 foundUser.addOrders(newOrder);
                 userRepository.save(foundUser);
 
-                mailSender.send(
-                        foundUser.getEmail(),
-                        "Order Confirmation",
-                        orderHtmlTemplate(newOrder));
+                CompletableFuture.runAsync(() -> {
+                    mailSender.send(
+                            foundUser.getEmail(),
+                            "Order Confirmation",
+                            orderHtmlTemplate(newOrder));
+                });
 
                 log.info("Order placed for existing user: {}", foundUser.getEmail());
             }
-
-
 
             return true;
         } catch (Exception e) {
