@@ -10,10 +10,7 @@ import com.ecommerce.booksale.book.subcategory.SubCategoryService;
 import com.ecommerce.booksale.exception.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -206,8 +203,8 @@ public class BookService {
 
 
     public List<BookDTO> getBestSeller(Integer defaultPage, Integer pageSize) {
-        Pageable pageable = PageRequest.of(defaultPage, pageSize);
-        Page<Book> books = bookRepository.findTopBestSellersByOrderBySoldQuantityDesc(pageable);
+        Pageable pageable = PageRequest.of(defaultPage, pageSize, Sort.by("soldQuantity").descending());
+        Page<Book> books = bookRepository.findAll(pageable);
         List<BookDTO> bookData = books.getContent().stream().map(BookMapper::toDTO).collect(Collectors.toList());
         return bookData;
     }
