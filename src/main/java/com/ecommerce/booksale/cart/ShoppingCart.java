@@ -63,11 +63,12 @@ public class ShoppingCart {
     }
 
     public boolean checkCreateOrderValid() {
-        if (items.isEmpty()) {
-            return false;
-        }
-
-        return true;
+       for (CartDTO item : this.items){
+           if (item.getChosen()){
+               return true;
+           }
+       }
+       return false;
     }
 
 

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public String createOrder(@ModelAttribute("userAddress") @Valid AddressDTO userAddress,
+    public String createOrder(@Valid @ModelAttribute("userAddress") AddressDTO userAddress,
                               BindingResult result,
                               @ModelAttribute("cart") ShoppingCart cart,
                                Model model){
@@ -39,18 +40,17 @@ public class OrderController {
         String message = "Đặt hàng thành công";
         if (result.hasErrors()) {
             // There are validation errors, handle them
-            // Get the first field error message
-            log.info("Error: {}", result.getFieldErrors().get(0).toString());
-            errorMessage = result.getFieldErrors().get(0).toString();
-            // Add the first error message to the model
-            System.out.println(errorMessage);
+            errorMessage = "Thiếu thông tin. " + result.getFieldErrors().stream()
+                    .map(FieldError::getDefaultMessage)
+                    .findFirst()
+                    .orElse("Lỗi không xác định");
             model.addAttribute("showModal", true);
-            model.addAttribute("message", message);
-            return "redirect:/cart";
+            model.addAttribute("message", errorMessage);
+            return "cart";
         }
 
         if (!cart.checkCreateOrderValid()){
-            message = "Đặt hàng thất bại. Giỏ hàng trống";
+            message = "Đặt hàng thất bại. Bạn chưa chọn sản phẩm nào";
             System.out.println(message);
             model.addAttribute("showModal", true);
             model.addAttribute("message", message );

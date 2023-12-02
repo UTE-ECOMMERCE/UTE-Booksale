@@ -1,7 +1,9 @@
 package com.ecommerce.booksale.user;
 
 import com.ecommerce.booksale.user.address.Address;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
@@ -11,11 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    @NotBlank
+    @Email(message = "Email không hợp lệ")
     private String email;
-    @NotBlank
+    @NotBlank(message = "Tên không được để trống")
     private String fullName;
-    @NotBlank
+    @NotBlank(message = "Số điện thoại không được để trống")
     private String phone;
 
     public UserDTO(User user){
